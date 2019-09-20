@@ -30,11 +30,21 @@ public class RegisterActivity extends AppCompatActivity {
     int hour;
     int minute;
     int distance; // meters
+    int repeat;
+    boolean inOut; // in: true
+
     DatePickerDialog picker;
     TimePickerDialog timePicker;
     Button regDateButton;
     Button regTimeButton;
+
     final int[] DISTANCES = {50, 100, 200, 500, 1000, 5000, 10000};
+
+    final int REPEAT_NONE = 0;
+    final int REPEAT_EVERYDAY = 1;
+    final int REPEAT_WEEK = 2;
+    final int REPEAT_MONTH = 3;
+    final int REPEAT_YEAR = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +121,34 @@ public class RegisterActivity extends AppCompatActivity {
                 // An item was selected. You can retrieve the selected item using
                 // parent.getItemAtPosition(pos)
                 distance = DISTANCES[pos];
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Another interface callback
+            }
+        });
+
+        repeat = REPEAT_NONE;
+        regRepeatSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener () {
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int pos, long id) {
+                // An item was selected. You can retrieve the selected item using
+                // parent.getItemAtPosition(pos)
+                repeat = pos;
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Another interface callback
+            }
+        });
+
+        inOut = true;
+        regLocationInOut.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener () {
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int pos, long id) {
+                // An item was selected. You can retrieve the selected item using
+                // parent.getItemAtPosition(pos)
+                inOut = pos == 0;
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
