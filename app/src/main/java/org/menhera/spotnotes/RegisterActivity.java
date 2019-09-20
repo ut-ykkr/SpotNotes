@@ -1,5 +1,6 @@
 package org.menhera.spotnotes;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -12,8 +13,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
@@ -25,10 +29,12 @@ public class RegisterActivity extends AppCompatActivity {
     int day;
     int hour;
     int minute;
+    int distance; // meters
     DatePickerDialog picker;
     TimePickerDialog timePicker;
     Button regDateButton;
     Button regTimeButton;
+    final int[] DISTANCES = {50, 100, 200, 500, 1000, 5000, 10000};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +82,41 @@ public class RegisterActivity extends AppCompatActivity {
                 timePicker.show();
             }
         });
+
+        Spinner regLocationPrecision = (Spinner) findViewById(R.id.regLocationPrecision);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.distances_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        regLocationPrecision.setAdapter(adapter);
+
+        Spinner regLocationInOut = findViewById(R.id.regLocationInOut);
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
+                R.array.in_out_array, android.R.layout.simple_spinner_item);
+
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        regLocationInOut.setAdapter(adapter2);
+
+        Spinner regRepeatSelect = findViewById(R.id.regRepeatSelect);
+        ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(this, R.array.repeat_array, android.R.layout.simple_spinner_item);
+        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        regRepeatSelect.setAdapter(adapter3);
+
+        distance = DISTANCES[0];
+        regLocationPrecision.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener () {
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int pos, long id) {
+                // An item was selected. You can retrieve the selected item using
+                // parent.getItemAtPosition(pos)
+                distance = DISTANCES[pos];
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Another interface callback
+            }
+        });
     }
 
     @Override
@@ -109,5 +150,9 @@ public class RegisterActivity extends AppCompatActivity {
         Calendar cal = Calendar.getInstance();
         cal.set(year, month, day, hour, minute);
         return cal.getTimeInMillis();
+    }
+
+    public int getDistance () {
+        return this.distance;
     }
 }

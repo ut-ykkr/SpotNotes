@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="in_out_array">
+        <item>いるときに通知</item>
+        <item>いないときに通知</item>
+    </string-array>
+</resources>
