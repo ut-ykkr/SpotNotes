@@ -23,6 +23,7 @@ public class RemindersFragment extends Fragment {
         homeViewModel =
                 ViewModelProviders.of(this).get(RemindersViewModel.class);
         View root = inflater.inflate(R.layout.fragment_reminders_list, container, false);
+        /*
         final TextView textView = root.findViewById(R.id.text_home);
         homeViewModel.getText().observe(this, new Observer<String>() {
             @Override
@@ -30,6 +31,8 @@ public class RemindersFragment extends Fragment {
                 textView.setText(s);
             }
         });
+        */
+
         return root;
     }
 }
