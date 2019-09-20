@@ -8,18 +8,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.menhera.spotnotes.DetailsActivity;
 import org.menhera.spotnotes.R;
@@ -37,14 +32,22 @@ public class SettingsFragment extends Fragment {
                 ViewModelProviders.of(this).get(SettingsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        AppCompatButton settingsDetailsButton = root.findViewById(R.id.settingsDetailsButton);
-        settingsDetailsButton.setOnClickListener(new View.OnClickListener() {
+        AppCompatButton settingsNotifyButton = root.findViewById(R.id.settingsNotifyButton);
+        settingsNotifyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showNotification("Title", "text.");
             }
         });
 
+        AppCompatButton settingsDetailsButton = root.findViewById(R.id.settingsDetailsButton);
+        settingsDetailsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), DetailsActivity.class);
+                startActivity(intent);
+            }
+        });
 
         /*final TextView textView = root.findViewById(R.id.text_notifications);
         notificationsViewModel.getText().observe(this, new Observer<String>() {

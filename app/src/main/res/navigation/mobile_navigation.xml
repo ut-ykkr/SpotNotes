@@ -8,18 +8,18 @@
     <fragment
         android:id="@+id/navigation_reminders_list"
         android:name="org.menhera.spotnotes.ui.reminders_list.RemindersFragment"
-        android:label="Reminders"
+        android:label="@string/title_reminders"
         tools:layout="@layout/fragment_reminders_list" />
 
     <fragment
         android:id="@+id/navigation_records_list"
         android:name="org.menhera.spotnotes.ui.records_list.RecordsFragment"
-        android:label="Records"
+        android:label="@string/title_records"
         tools:layout="@layout/fragment_settings" />
 
     <fragment
         android:id="@+id/navigation_settings"
         android:name="org.menhera.spotnotes.ui.settings.SettingsFragment"
-        android:label="Settings"
+        android:label="@string/title_settings"
         tools:layout="@layout/fragment_records_list" />
 </navigation>

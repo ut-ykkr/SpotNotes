@@ -4,16 +4,16 @@
     <item
         android:id="@+id/navigation_reminders_list"
         android:icon="@android:drawable/ic_lock_idle_alarm"
-        android:title="Reminders" />
+        android:title="@string/title_reminders" />
 
     <item
         android:id="@+id/navigation_records_list"
         android:icon="@android:drawable/ic_menu_recent_history"
-        android:title="Records" />
+        android:title="@string/title_records" />
 
     <item
         android:id="@+id/navigation_settings"
         android:icon="@android:drawable/ic_menu_preferences"
-        android:title="Settings" />
+        android:title="@string/title_settings" />
 
 </menu>

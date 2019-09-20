@@ -4,6 +4,7 @@
 
     <item
         android:id="@+id/detailsActionBack"
-        android:title="Back"
+        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        android:title="@string/activity_back"
         app:showAsAction="ifRoom" />
 </menu>

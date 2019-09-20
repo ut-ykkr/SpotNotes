@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Spot Notes</string>
+    <string name="activity_back">戻る</string>
+    <string name="settings_development">開発オプション</string>
+    <string name="settings_development_notify">通知を表示</string>
+    <string name="settings_suggestions">おすすめ</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_records">記録</string>
+    <string name="title_reminders">リマインダー</string>
+    <string name="title_settings">設定</string>
+    <string name="settingd_development_show_details">詳細を表示</string>
+</resources>
