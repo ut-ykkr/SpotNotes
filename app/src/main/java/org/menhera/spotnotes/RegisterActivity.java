@@ -17,6 +17,7 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class RegisterActivity extends AppCompatActivity {
     int year;
@@ -52,7 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 day = dayOfMonth;
                                 month = monthOfYear;
                                 year = year2;
-                                regDateButton.setText(year + "-" + month + "-" + day);
+                                regDateButton.setText(year + "-" + (month + 1 ) + "-" + day);
                             }
                         }, year, month, day);
                 picker.show();
@@ -102,5 +103,11 @@ public class RegisterActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    public long getTimeInMillis () {
+        Calendar cal = Calendar.getInstance();
+        cal.set(year, month, day, hour, minute);
+        return cal.getTimeInMillis();
     }
 }
