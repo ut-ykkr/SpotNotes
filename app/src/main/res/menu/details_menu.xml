@@ -3,11 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/recActionCancel"
-        android:title="Cencel"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/recActionOK"
-        android:title="OK"
+        android:id="@+id/detailsActionBack"
+        android:title="Back"
         app:showAsAction="ifRoom" />
 </menu>

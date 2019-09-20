@@ -1,39 +1,35 @@
 package org.menhera.spotnotes;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
-public class RecordActivity extends AppCompatActivity {
+public class DetailsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_record);
+        setContentView(R.layout.activity_details);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Add Record");
+        actionBar.setTitle("Details");
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.record_menu, menu);
+        inflater.inflate(R.menu.details_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected (MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.recActionCancel:
+            case R.id.detailsActionBack:
                 finish();
-                return true;
-
-            case R.id.recActionOK:
-
                 return true;
 
             default:
