@@ -92,7 +92,11 @@ public class RemindService extends Service implements LocationListener {
 
 
         initLocationManager();
-        locationStart();
+        if (null == bestProvider) {
+            showNotification ("Location required", "error");
+        } else {
+            locationStart();
+        }
 
         return START_NOT_STICKY;
     }
@@ -103,7 +107,7 @@ public class RemindService extends Service implements LocationListener {
 
         // 詳細設定
         Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+//        criteria.setAccuracy(Criteria.ACCURACY_FINE);
         criteria.setPowerRequirement(Criteria.POWER_HIGH);
         criteria.setSpeedRequired(false);
         criteria.setAltitudeRequired(false);
