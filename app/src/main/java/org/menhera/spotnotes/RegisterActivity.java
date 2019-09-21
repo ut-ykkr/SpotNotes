@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
@@ -58,6 +59,7 @@ public class RegisterActivity extends AppCompatActivity implements OnMapReadyCal
 
     ReminderItem reminderItem;
     private GoogleMap mMap;
+    private ScrollView mScrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,10 +193,16 @@ public class RegisterActivity extends AppCompatActivity implements OnMapReadyCal
         regName = findViewById(R.id.regName);
         regNotes = findViewById(R.id.regNotes);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        ScrollMapFragment mapFragment = (ScrollMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.regMap);
         mapFragment.getMapAsync(this);
-
+        mScrollView = (ScrollView) findViewById(R.id.regScrollView);
+        mapFragment.setListener(new ScrollMapFragment.OnTouchListener() {
+            @Override
+            public void onTouch() {
+                mScrollView.requestDisallowInterceptTouchEvent(true);
+            }
+        });
     }
 
     public ReminderItem buildReminderItem () {
@@ -260,6 +268,7 @@ public class RegisterActivity extends AppCompatActivity implements OnMapReadyCal
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.getUiSettings().setZoomControlsEnabled(true);
 
         LatLng latLng = new LatLng( 35, 139 );
 //        mMap.addMarker( new MarkerOptions()
