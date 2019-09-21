@@ -211,6 +211,7 @@ public class RegisterActivity extends AppCompatActivity {
                 // AlarmManager (index)
                 Context context = getBaseContext();
                 Intent intent = new Intent(context, RemindService.class);
+                intent.putExtra("index", index);
                 PendingIntent pendingIntent
                         = PendingIntent.getService(
                         context, -1, intent,
@@ -218,7 +219,7 @@ public class RegisterActivity extends AppCompatActivity {
                 AlarmManager alarmManager
                         = (AlarmManager)
                         context.getSystemService(ALARM_SERVICE);
-
+                alarmManager.set(AlarmManager.RTC, reminderItem.getMilliseconds(), pendingIntent);
                 finish ();
                 return true;
 
