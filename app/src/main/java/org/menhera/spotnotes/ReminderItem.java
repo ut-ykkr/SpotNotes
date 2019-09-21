@@ -1,5 +1,7 @@
 package org.menhera.spotnotes;
 
+import android.text.TextUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -131,7 +133,7 @@ public class ReminderItem extends ListItem {
     }
 
     public String getDateTime () {
-        if (null != this.dateTime) {
+        if (!TextUtils.isEmpty(this.dateTime)) {
             return this.dateTime;
         }
         Calendar calendar = Calendar.getInstance();
