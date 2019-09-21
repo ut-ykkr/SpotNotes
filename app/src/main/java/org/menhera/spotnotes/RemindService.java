@@ -33,6 +33,8 @@ public class RemindService extends Service implements LocationListener {
     final static String TAG = "RemindService";
     private LocationManager mLocationManager;
     private String bestProvider;
+
+
     public String title;
     public double lat;
     public double lon;
@@ -66,22 +68,24 @@ public class RemindService extends Service implements LocationListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "onStartCommand");
-        JSONObject jsonObject = new JSONObject();
+        int index = intent.getIntExtra("index", 0);
+        Log.d(TAG, "onStartCommand index : " + index);
 
-        try {
-            title = jsonObject.getString("title" );
-            lat = jsonObject.getDouble("lat");
-            lon = jsonObject.getDouble("lon" );
-            addr = jsonObject.getString("addr");
-            radius = jsonObject.getInt("radius");
-            in = jsonObject.getBoolean("in");
-            time  =jsonObject.getInt("time");
-            repeat = jsonObject.getInt("repeat" );
-            memo = jsonObject.getString("memo");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        SpotNotesApplication app = (SpotNotesApplication)getApplication();
+        ReminderItem item = app.get(index);
+
+
+        in = item.getInOut();
+
+        title = item.getTitle();
+        lat = item.getLat();
+        lon =  item.getLon();
+        addr = item.getLocation();
+        time = item.getMilliseconds();
+        radius = item.getDistance();
+        memo = item.getNotes();
+
+
 
 
 
@@ -150,7 +154,7 @@ public class RemindService extends Service implements LocationListener {
         // notificationId is a unique int for each notification that you must define
         notificationManager.notify(notificationCount, builder.build());
     }
-    
+
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
