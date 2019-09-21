@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -232,7 +233,12 @@ public class RegisterActivity extends AppCompatActivity implements OnMapReadyCal
             case R.id.regActionOK:
                 // Complete action
                 SpotNotesApplication app = (SpotNotesApplication) getApplication();
-                int index = app.addReminderItem(buildReminderItem());
+                buildReminderItem();
+                String title = reminderItem.getTitle();
+                if (TextUtils.isEmpty(title)) {
+                    return false;
+                }
+                int index = app.addReminderItem(reminderItem);
                 // AlarmManager (index)
                 Context context = getBaseContext();
                 Intent intent = new Intent(context, RemindService.class);

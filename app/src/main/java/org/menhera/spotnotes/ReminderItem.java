@@ -46,6 +46,10 @@ public class ReminderItem extends ListItem {
         this.locationName = locationName;
     }
 
+    public void setLocationName (String locationName1) {
+        this.locationName = locationName1;
+    }
+
     public void setInOut (boolean inOut1) {
         inOut = inOut1;
     }
