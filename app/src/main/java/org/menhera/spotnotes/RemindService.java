@@ -22,6 +22,8 @@ import androidx.core.app.NotificationManagerCompat;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
@@ -91,8 +93,7 @@ public class RemindService extends Service implements LocationListener {
 
 
 
-        initLocationManager();
-        if (null == bestProvider) {
+        if (!initLocationManager ()) {
             showNotification ("Location required", "error");
         } else {
             locationStart();
@@ -101,25 +102,9 @@ public class RemindService extends Service implements LocationListener {
         return START_NOT_STICKY;
     }
 
-    private void initLocationManager() {
+    private boolean initLocationManager() {
         // インスタンス生成
         mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-        // 詳細設定
-        Criteria criteria = new Criteria();
-//        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        criteria.setPowerRequirement(Criteria.POWER_HIGH);
-        criteria.setSpeedRequired(false);
-        criteria.setAltitudeRequired(false);
-        criteria.setBearingRequired(false);
-        criteria.setCostAllowed(true);
-        criteria.setHorizontalAccuracy(Criteria.ACCURACY_HIGH);
-        criteria.setVerticalAccuracy(Criteria.ACCURACY_HIGH);
-        bestProvider = mLocationManager.getBestProvider(criteria, true);
-    }
-
-
-    private void locationStart() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
@@ -129,10 +114,38 @@ public class RemindService extends Service implements LocationListener {
                 //                                          int[] grantResults)
                 // to handle the case where the user grants the permission. See the documentation
                 // for Activity#requestPermissions for more details.
-                return;
+                return false;
             }
         }
-        mLocationManager.requestLocationUpdates(bestProvider, 60000, 3, this);
+//        try {
+//            mLocationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+//        } catch (Exception ex) {
+//            showNotification("Location error", "no provider");
+//        }
+        List<String> providers = mLocationManager.getProviders(true);
+        for (String provider : providers) {
+            Log.d(TAG, "privider: " + provider);
+        }
+
+        // 詳細設定
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.NO_REQUIREMENT);
+        criteria.setPowerRequirement(Criteria.NO_REQUIREMENT);
+        criteria.setSpeedRequired(false);
+        criteria.setAltitudeRequired(false);
+        criteria.setBearingRequired(false);
+        criteria.setCostAllowed(true);
+        bestProvider = mLocationManager.getBestProvider(criteria, true);
+        return null != bestProvider;
+    }
+
+
+    private void locationStart() {
+        try {
+            mLocationManager.requestLocationUpdates(bestProvider, 1000, 1, this);
+        } catch (SecurityException ex) {
+            showNotification("Location error", "requestLocationUpdates() failed");
+        }
     }
 
     private void locationStop() {
