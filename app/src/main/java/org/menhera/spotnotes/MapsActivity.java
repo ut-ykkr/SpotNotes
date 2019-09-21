@@ -29,22 +29,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        float zoom = 12.0f;
+        mMap.getUiSettings().setZoomControlsEnabled(true);
 
         LatLng latLng = new LatLng( 35, 139 );
-        mMap.addMarker( new MarkerOptions()
-                .title( "ピンのタイトル" )
-                .position( latLng ) );
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
-
-
-        // Add a marker in Sydney and move the camera
+//        mMap.addMarker( new MarkerOptions()
+//                .title( "ピンのタイトル" )
+//                .position( latLng ) );
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
 
         //LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
         //mMap.addMarker(new MarkerOptions().position(myLocation).title("now Location"));
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 18));
     }
-
 
 
 }
