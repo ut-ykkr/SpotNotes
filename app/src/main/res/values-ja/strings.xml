@@ -13,4 +13,7 @@
     <string name="title_activity_maps">地図</string>
     <string name="required">必須</string>
     <string name="msg_location_denied">このアプリの動作には位置情報が必要です</string>
+    <string name="msg_no_location_provider">利用できる位置情報源がありません</string>
+    <string name="reminder_title_hint">リマインダ…</string>
+    <string name="notes_hint">メモ…</string>
 </resources>

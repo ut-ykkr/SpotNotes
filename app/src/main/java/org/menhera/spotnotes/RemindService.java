@@ -31,10 +31,11 @@ import java.util.List;
  * TODO: Customize class - update intent actions, extra parameters and static
  * helper methods.
  */
-public class RemindService extends Service implements LocationListener {
+public class RemindService extends Service implements LocationClient.Listener {
     final static String TAG = "RemindService";
     private LocationManager mLocationManager;
     private String bestProvider;
+    private LocationClient locationClient;
 
 
     public String title;
@@ -87,72 +88,10 @@ public class RemindService extends Service implements LocationListener {
         radius = item.getDistance();
         memo = item.getNotes();
 
-
-
-
-
-
-
-        if (!initLocationManager ()) {
-            showNotification ("Location required", "error");
-        } else {
-            locationStart();
-        }
+        locationClient = new LocationClient(this, this);
 
         return START_NOT_STICKY;
     }
-
-    private boolean initLocationManager() {
-        // インスタンス生成
-        mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    Activity#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for Activity#requestPermissions for more details.
-                return false;
-            }
-        }
-//        try {
-//            mLocationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-//        } catch (Exception ex) {
-//            showNotification("Location error", "no provider");
-//        }
-        List<String> providers = mLocationManager.getProviders(true);
-        for (String provider : providers) {
-            Log.d(TAG, "privider: " + provider);
-        }
-
-        // 詳細設定
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.NO_REQUIREMENT);
-        criteria.setPowerRequirement(Criteria.NO_REQUIREMENT);
-        criteria.setSpeedRequired(false);
-        criteria.setAltitudeRequired(false);
-        criteria.setBearingRequired(false);
-        criteria.setCostAllowed(true);
-        bestProvider = mLocationManager.getBestProvider(criteria, true);
-        return null != bestProvider;
-    }
-
-
-    private void locationStart() {
-        try {
-            mLocationManager.requestLocationUpdates(bestProvider, 1000, 1, this);
-        } catch (SecurityException ex) {
-            showNotification("Location error", "requestLocationUpdates() failed");
-        }
-    }
-
-    private void locationStop() {
-        mLocationManager.removeUpdates(this);
-    }
-
-
 
     public void showNotification (String title, String description){
 
@@ -188,9 +127,8 @@ public class RemindService extends Service implements LocationListener {
         }
     }
 
-
     @Override
-    public void onLocationChanged(Location location) {
+    public void onLocationFetched(Location location) {
         Log.d(TAG,"Lat : " + location.getLatitude() + " Lon : " + location.getLongitude());
         Location dist = new Location("gps");
         dist.setLongitude(lon);
@@ -198,39 +136,11 @@ public class RemindService extends Service implements LocationListener {
 
         float distance = location.distanceTo(dist);
         Log.d(TAG, "dist : " + distance);
-        locationStop();
-
-
-
-
 
         if((in && distance <= radius ) || (!in && distance > radius)){
-
             showNotification(title, memo);
-
-
         }
 
-
-
-
-
         stopSelf();
-
-    }
-
-    @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String s) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String s) {
-
     }
 }

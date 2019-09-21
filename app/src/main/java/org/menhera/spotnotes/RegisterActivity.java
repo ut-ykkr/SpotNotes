@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -313,6 +314,13 @@ public class RegisterActivity extends AppCompatActivity implements OnMapReadyCal
 //                .title( "ピンのタイトル" )
 //                .position( latLng ) );
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+
+        LocationClient locationClient = new LocationClient(this, new LocationClient.Listener() {
+            @Override
+            public void onLocationFetched(Location location) {
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
+            }
+        });
 
         //LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
         //mMap.addMarker(new MarkerOptions().position(myLocation).title("now Location"));

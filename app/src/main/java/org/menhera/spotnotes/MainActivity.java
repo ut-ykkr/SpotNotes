@@ -23,10 +23,6 @@ import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
     final static int PERMISSIONS_REQUEST_LOCATION = 1;
-    final public static String[] PERMISSIONS_LOCATION = {
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
                 != PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, PERMISSIONS_LOCATION, PERMISSIONS_REQUEST_LOCATION);
+            ActivityCompat.requestPermissions(this, LocationClient.PERMISSIONS_LOCATION, PERMISSIONS_REQUEST_LOCATION);
         }
 
     }

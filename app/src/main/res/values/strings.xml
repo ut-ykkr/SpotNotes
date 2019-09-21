@@ -12,4 +12,7 @@
     <string name="settingd_development_show_details">Show Details...</string>
     <string name="required">Required</string>
     <string name="msg_location_denied">Location is required for this app to work.</string>
+    <string name="msg_no_location_provider">No location provider available</string>
+    <string name="reminder_title_hint">Reminder...</string>
+    <string name="notes_hint">Notes...</string>
 </resources>
