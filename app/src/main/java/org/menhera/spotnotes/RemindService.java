@@ -150,10 +150,7 @@ public class RemindService extends Service implements LocationListener {
         // notificationId is a unique int for each notification that you must define
         notificationManager.notify(notificationCount, builder.build());
     }
-
-
-}
-
+    
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
