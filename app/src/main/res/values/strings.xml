@@ -4,6 +4,7 @@
     <string name="title_reminders">Reminders</string>
     <string name="title_records">Records</string>
     <string name="title_settings">Settings</string>
+    <string name="title_activity_maps">Map</string>
     <string name="settings_suggestions">Suggestions</string>
     <string name="settings_development">Development Options</string>
     <string name="settings_development_notify">Show Notification</string>
