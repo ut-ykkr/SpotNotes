@@ -251,7 +251,7 @@ public class RegisterActivity extends AppCompatActivity implements OnMapReadyCal
                 AlarmManager alarmManager
                         = (AlarmManager)
                         context.getSystemService(ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC, reminderItem.getMilliseconds(), pendingIntent);
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, reminderItem.getMilliseconds(), pendingIntent);
                 finish ();
                 return true;
 
