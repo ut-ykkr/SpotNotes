@@ -6,8 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Menu;
@@ -205,6 +209,16 @@ public class RegisterActivity extends AppCompatActivity {
                 SpotNotesApplication app = (SpotNotesApplication) getApplication();
                 int index = app.addReminderItem(buildReminderItem());
                 // AlarmManager (index)
+                Context context = getBaseContext();
+                Intent intent = new Intent(context, RemindService.class);
+                PendingIntent pendingIntent
+                        = PendingIntent.getService(
+                        context, -1, intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+                AlarmManager alarmManager
+                        = (AlarmManager)
+                        context.getSystemService(ALARM_SERVICE);
+
                 finish ();
                 return true;
 
