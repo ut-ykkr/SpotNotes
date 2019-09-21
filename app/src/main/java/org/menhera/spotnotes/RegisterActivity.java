@@ -13,6 +13,8 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -35,9 +37,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class RegisterActivity extends AppCompatActivity implements OnMapReadyCallback {
     int year;
@@ -213,8 +218,31 @@ public class RegisterActivity extends AppCompatActivity implements OnMapReadyCal
         reminderItem.setNotes(regNotes.getText().toString());
         LatLng loc = mMap.getCameraPosition().target;
         reminderItem.setLatLon(loc.latitude, loc.longitude);
+        reminderItem.setLocationName(getLocation(loc.latitude, loc.longitude));
         return reminderItem;
     }
+
+    public String getLocation(double lati, double longi){
+        //Address address1 = new Address(this, );
+        StringBuffer strAddr = new StringBuffer();
+        Geocoder coder = new Geocoder(this, Locale.getDefault());
+        try{
+            List<Address> address = coder.getFromLocation(lati, longi, 1);
+            for (Address addr : address) {
+                int idx = addr.getMaxAddressLineIndex();
+                for (int i = 0; i <= idx; i++) {
+                    strAddr.append(addr.getAddressLine(i));
+                }
+            }
+            //String address = address1.getAdminarea() + address1.getLocality();
+            return strAddr.toString();
+            //return address
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -277,17 +305,14 @@ public class RegisterActivity extends AppCompatActivity implements OnMapReadyCal
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        float zoom = 12.0f;
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
         LatLng latLng = new LatLng( 35, 139 );
 //        mMap.addMarker( new MarkerOptions()
 //                .title( "ピンのタイトル" )
 //                .position( latLng ) );
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
-
-
-        // Add a marker in Sydney and move the camera
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
 
         //LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
         //mMap.addMarker(new MarkerOptions().position(myLocation).title("now Location"));
