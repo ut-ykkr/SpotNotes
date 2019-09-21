@@ -26,11 +26,18 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements OnMapReadyCallback {
     int year;
     int month;
     int day;
@@ -50,6 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
     final int[] DISTANCES = {50, 100, 200, 500, 1000, 5000, 10000};
 
     ReminderItem reminderItem;
+    private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,11 +190,18 @@ public class RegisterActivity extends AppCompatActivity {
 
         regName = findViewById(R.id.regName);
         regNotes = findViewById(R.id.regNotes);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.regMap);
+        mapFragment.getMapAsync(this);
+
     }
 
     public ReminderItem buildReminderItem () {
         reminderItem.setTitle (regName.getText().toString());
         reminderItem.setNotes(regNotes.getText().toString());
+        LatLng loc = mMap.getCameraPosition().target;
+        reminderItem.setLatLon(loc.latitude, loc.longitude);
         return reminderItem;
     }
 
@@ -240,4 +255,26 @@ public class RegisterActivity extends AppCompatActivity {
     public int getDistance () {
         return this.distance;
     }
+
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        LatLng latLng = new LatLng( 35, 139 );
+//        mMap.addMarker( new MarkerOptions()
+//                .title( "ピンのタイトル" )
+//                .position( latLng ) );
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
+
+
+        // Add a marker in Sydney and move the camera
+
+        //LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        //mMap.addMarker(new MarkerOptions().position(myLocation).title("now Location"));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 18));
+    }
+
+
 }
