@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="32dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:ems="10"
@@ -37,27 +37,33 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.gms.maps.MapView
-                android:id="@+id/regMap"
-                android:layout_width="0dp"
-                android:layout_height="256dp"
-                android:layout_marginTop="16dp"
+            <fragment
+                android:id="@+id/detailsMap"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="245dp"
+                app:layout_constraintBottom_toTopOf="@+id/regRepeatSelect"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/regName" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.26" />
 
             <Spinner
                 android:id="@+id/regLocationPrecision"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
+                android:layout_width="378dp"
+                android:layout_height="51dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
+                app:layout_constraintBottom_toTopOf="@+id/detailsMap"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/regMap" />
+                app:layout_constraintTop_toBottomOf="@+id/detailsMap"
+                app:layout_constraintVertical_bias="0.028" />
 
             <Spinner
                 android:id="@+id/regLocationInOut"
@@ -69,6 +75,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/regLocationPrecision" />
 
