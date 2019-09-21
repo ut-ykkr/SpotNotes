@@ -74,6 +74,8 @@ public class RegisterActivity extends AppCompatActivity implements OnMapReadyCal
         day = cldr.get(Calendar.DAY_OF_MONTH);
         month = cldr.get(Calendar.MONTH);
         year = cldr.get(Calendar.YEAR);
+        hour = cldr.get(Calendar.HOUR_OF_DAY);
+        minute = cldr.get(Calendar.MINUTE);
 
         regDateButton = findViewById(R.id.regDateButton);
         regDateButton.setOnClickListener(new View.OnClickListener() {
