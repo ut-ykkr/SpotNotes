@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.menhera.spotnotes">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:name=".SpotNotesApplication"
         android:allowBackup="true"
@@ -22,6 +25,9 @@
         </activity>
         <activity android:name=".RegisterActivity"></activity>
         <activity android:name=".RecordActivity" />
+        <service
+            android:name=".RemindService"
+            android:exported="true"></service>
     </application>
 
 </manifest>
