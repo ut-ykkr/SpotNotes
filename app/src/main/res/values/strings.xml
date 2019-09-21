@@ -10,4 +10,5 @@
     <string name="settings_development_notify">Show Notification</string>
     <string name="activity_back">Back</string>
     <string name="settingd_development_show_details">Show Details...</string>
+    <string name="required">Required</string>
 </resources>

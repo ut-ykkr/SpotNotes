@@ -11,4 +11,5 @@
     <string name="title_settings">設定</string>
     <string name="settingd_development_show_details">詳細を表示</string>
     <string name="title_activity_maps">地図</string>
+    <string name="required">必須</string>
 </resources>

@@ -236,6 +236,7 @@ public class RegisterActivity extends AppCompatActivity implements OnMapReadyCal
                 buildReminderItem();
                 String title = reminderItem.getTitle();
                 if (TextUtils.isEmpty(title)) {
+                    regName.setError(getResources().getString(R.string.required));
                     return false;
                 }
                 int index = app.addReminderItem(reminderItem);
