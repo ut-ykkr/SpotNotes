@@ -75,7 +75,7 @@ public class ReminderItem extends ListItem {
     }
 
     public String getNotes() {
-        return this.notes;
+        return this.notes.trim();
     }
 
     public double getLat () {
@@ -127,7 +127,7 @@ public class ReminderItem extends ListItem {
     }
 
     public String getTitle () {
-        return this.title;
+        return this.title.trim();
     }
 
     public String getDateTime () {
