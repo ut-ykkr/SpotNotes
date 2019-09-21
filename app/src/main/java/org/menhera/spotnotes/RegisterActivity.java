@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,9 +18,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -30,21 +33,19 @@ public class RegisterActivity extends AppCompatActivity {
     int hour;
     int minute;
     int distance; // meters
-    int repeat;
     boolean inOut; // in: true
 
     DatePickerDialog picker;
     TimePickerDialog timePicker;
     Button regDateButton;
     Button regTimeButton;
+    Calendar cldr;
+    EditText regName;
+    EditText regNotes;
 
     final int[] DISTANCES = {50, 100, 200, 500, 1000, 5000, 10000};
 
-    final int REPEAT_NONE = 0;
-    final int REPEAT_EVERYDAY = 1;
-    final int REPEAT_WEEK = 2;
-    final int REPEAT_MONTH = 3;
-    final int REPEAT_YEAR = 4;
+    ReminderItem reminderItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,9 @@ public class RegisterActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Add Reminder");
 
-        final Calendar cldr = Calendar.getInstance();
+        cldr = Calendar.getInstance();
+
+        reminderItem = new ReminderItem("", "");
         day = cldr.get(Calendar.DAY_OF_MONTH);
         month = cldr.get(Calendar.MONTH);
         year = cldr.get(Calendar.YEAR);
@@ -69,7 +72,11 @@ public class RegisterActivity extends AppCompatActivity {
                                 day = dayOfMonth;
                                 month = monthOfYear;
                                 year = year2;
-                                regDateButton.setText(year + "-" + (month + 1 ) + "-" + day);
+                                long milliseconds = getTimeInMillis ();
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                                String text = sdf.format(new Date(milliseconds));
+                                regDateButton.setText(text);
+                                reminderItem.setMilliseconds(milliseconds);
                             }
                         }, year, month, day);
                 picker.show();
@@ -86,7 +93,11 @@ public class RegisterActivity extends AppCompatActivity {
                             public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
                                 hour = sHour;
                                 minute = sMinute;
-                                regTimeButton.setText(hour + ":" + minute);
+                                long milliseconds = getTimeInMillis ();
+                                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+                                String text = sdf.format(new Date(milliseconds));
+                                regTimeButton.setText(text);
+                                reminderItem.setMilliseconds(milliseconds);
                             }
                         }, hour, minute, true);
                 timePicker.show();
@@ -114,13 +125,14 @@ public class RegisterActivity extends AppCompatActivity {
         adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         regRepeatSelect.setAdapter(adapter3);
 
-        distance = DISTANCES[0];
+        reminderItem.setDistance(DISTANCES[0]);// TODO
         regLocationPrecision.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener () {
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int pos, long id) {
                 // An item was selected. You can retrieve the selected item using
                 // parent.getItemAtPosition(pos)
-                distance = DISTANCES[pos];
+                reminderItem.setDistance(DISTANCES[pos]);
+
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
@@ -128,13 +140,17 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        repeat = REPEAT_NONE;
+        Resources res = getResources();
+        reminderItem.repeatLabels = res.getStringArray(R.array.repeat_array);
+        reminderItem.inOutLabels = res.getStringArray(R.array.in_out_array);
+        reminderItem.dayNames = res.getStringArray(R.array.days);
+
         regRepeatSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener () {
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int pos, long id) {
                 // An item was selected. You can retrieve the selected item using
                 // parent.getItemAtPosition(pos)
-                repeat = pos;
+                reminderItem.setRepeat(pos);
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
@@ -148,13 +164,26 @@ public class RegisterActivity extends AppCompatActivity {
                                        int pos, long id) {
                 // An item was selected. You can retrieve the selected item using
                 // parent.getItemAtPosition(pos)
-                inOut = pos == 0;
+                if (pos == 0) {
+                    reminderItem.setInOut (ReminderItem.IN);
+                } else {
+                    reminderItem.setInOut (ReminderItem.OUT);
+                }
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
                 // Another interface callback
             }
         });
+
+        regName = findViewById(R.id.regName);
+        regNotes = findViewById(R.id.regNotes);
+    }
+
+    public ReminderItem buildReminderItem () {
+        reminderItem.setTitle (regName.getText().toString());
+        reminderItem.setNotes(regNotes.getText().toString());
+        return reminderItem;
     }
 
     @Override
@@ -172,8 +201,11 @@ public class RegisterActivity extends AppCompatActivity {
                 return true;
 
             case R.id.regActionOK:
-                // User chose the "Favorite" action, mark the current item
-                // as a favorite...
+                // Complete action
+                SpotNotesApplication app = (SpotNotesApplication) getApplication();
+                int index = app.addReminderItem(buildReminderItem());
+                // AlarmManager (index)
+                finish ();
                 return true;
 
             default:

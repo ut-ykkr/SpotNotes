@@ -24,6 +24,10 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
         this.items = items;
     }
 
+    public void setItems (List<ReminderItem> items) {
+        this.items = items;
+    }
+
     // Create new views (invoked by the layout manager)
     @Override
     public RemindersAdapter.ReminderHolder onCreateViewHolder(ViewGroup parent,

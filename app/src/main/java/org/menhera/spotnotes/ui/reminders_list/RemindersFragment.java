@@ -23,6 +23,7 @@ import org.menhera.spotnotes.R;
 import org.menhera.spotnotes.RegisterActivity;
 import org.menhera.spotnotes.ReminderItem;
 import org.menhera.spotnotes.RemindersAdapter;
+import org.menhera.spotnotes.SpotNotesApplication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class RemindersFragment extends Fragment {
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     private RemindersAdapter mAdapter;
-
+    boolean started = false;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -51,10 +52,11 @@ public class RemindersFragment extends Fragment {
         });
 
         List<ReminderItem> items = new ArrayList<ReminderItem> ();
-        for (int i = 0; i < 30; i++) {
-            ReminderItem item = new ReminderItem ("ごはん", "2019-09-21 18:00", "東京都文京区");
-            items.add (item);
-        }
+
+//        for (int i = 0; i < 30; i++) {
+//            ReminderItem item = new ReminderItem ("ごはん", "2019-09-21 18:00", "東京都文京区");
+//            items.add (item);
+//        }
 
         recyclerView = (RecyclerView) root.findViewById(R.id.remlistRecyclerView);
 
@@ -84,6 +86,15 @@ public class RemindersFragment extends Fragment {
         });
         */
 
+        started = true;
         return root;
+    }
+
+    public void onResume () {
+        super.onResume();
+        if (!started) return;
+
+        mAdapter.setItems (((SpotNotesApplication) getActivity().getApplication()).getReminderItems ());
+        mAdapter.notifyDataSetChanged();
     }
 }
