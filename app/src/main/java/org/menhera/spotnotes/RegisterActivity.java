@@ -72,8 +72,14 @@ public class RegisterActivity extends AppCompatActivity implements OnMapReadyCal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.regToolbar);
+        setSupportActionBar(myToolbar);
+
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Add Reminder");
+        actionBar.setTitle("");
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
 
         cldr = Calendar.getInstance();
 
@@ -255,10 +261,6 @@ public class RegisterActivity extends AppCompatActivity implements OnMapReadyCal
     @Override
     public boolean onOptionsItemSelected (MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.regActionCancel:
-                finish();
-                return true;
-
             case R.id.regActionOK:
                 // Complete action
                 SpotNotesApplication app = (SpotNotesApplication) getApplication();

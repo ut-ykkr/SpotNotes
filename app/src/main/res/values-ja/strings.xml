@@ -16,4 +16,12 @@
     <string name="msg_no_location_provider">利用できる位置情報源がありません</string>
     <string name="reminder_title_hint">リマインダ…</string>
     <string name="notes_hint">メモ…</string>
+    <string name="tab_inuse">使用中</string>
+    <string name="tab_trash">ゴミ箱</string>
+    <string name="settings_suggestions_count">おすすめされるまでに必要な繰り返しの回数</string>
+    <string name="settings_suggestions_enabled">おすすめを有効にする</string>
+    <string name="title_details">詳細</string>
+    <string name="settings_about_website">プロジェクトサイト</string>
+    <string name="settings_about">このアプリについて</string>
+    <string name="record_title_hint">記録…</string>
 </resources>

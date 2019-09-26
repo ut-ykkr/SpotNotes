@@ -15,4 +15,14 @@
     <string name="msg_no_location_provider">No location provider available</string>
     <string name="reminder_title_hint">Reminder...</string>
     <string name="notes_hint">Notes...</string>
+    <string name="tab_inuse">In use</string>
+    <string name="tab_trash">Trash</string>
+
+    <string name="settings_suggestions_count">Repeat count needed before suggesion is made</string>
+    <string name="settings_suggestions_enabled">Enable suggestions</string>
+    <string name="title_details">Details</string>
+    <string name="project_site_uri" translatable="false">https://github.com/ut-ykkr/SpotNotes</string>
+    <string name="settings_about_website">Project site...</string>
+    <string name="settings_about">About this app</string>
+    <string name="record_title_hint">Record...</string>
 </resources>

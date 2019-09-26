@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class ReminderItem extends ListItem {
+public class ReminderItem extends SpotNotesListItem {
     private String title = "";
     private String dateTime = "";
     private long milliseconds;

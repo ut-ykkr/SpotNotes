@@ -1,6 +1,6 @@
 package org.menhera.spotnotes;
 
-public class RecordItem extends ListItem {
+public class RecordItem extends SpotNotesListItem {
     private String title = "";
     private String avgDuration = "";
 

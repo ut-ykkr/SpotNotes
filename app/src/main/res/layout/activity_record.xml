@@ -6,13 +6,28 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/recName"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/recToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Title"
-        android:inputType="textPersonName" />
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" >
+
+        <LinearLayout
+            android:id="@+id/recToolbarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <EditText
+                android:id="@+id/recName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/record_title_hint"
+                android:inputType="textPersonName" />
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/recMap"

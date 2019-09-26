@@ -1,28 +1,18 @@
 package org.menhera.spotnotes;
 
-import android.Manifest;
 import android.app.IntentService;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.List;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -75,7 +65,7 @@ public class RemindService extends Service implements LocationClient.Listener {
         Log.d(TAG, "onStartCommand index : " + index);
 
         SpotNotesApplication app = (SpotNotesApplication)getApplication();
-        ReminderItem item = app.get(index);
+        ReminderItem item = app.getReminderItem(index);
 
 
         in = item.getInOut();

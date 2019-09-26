@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/navigation_reminders_list"
-        android:name="org.menhera.spotnotes.ui.reminders_list.RemindersFragment"
+        android:name="org.menhera.spotnotes.ui.ReminderTabsFragment"
         android:label="@string/title_reminders"
-        tools:layout="@layout/fragment_reminders_list" />
+        tools:layout="@layout/fragment_reminder" />
 
     <fragment
         android:id="@+id/navigation_records_list"
@@ -19,7 +19,6 @@
 
     <fragment
         android:id="@+id/navigation_settings"
-        android:name="org.menhera.spotnotes.ui.settings.SettingsFragment"
-        android:label="@string/title_settings"
-        tools:layout="@layout/fragment_records_list" />
+        android:name="org.menhera.spotnotes.ui.MainSettingsFragment"
+        android:label="@string/title_settings" />
 </navigation>

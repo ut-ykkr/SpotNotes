@@ -1,7 +1,9 @@
 package org.menhera.spotnotes;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,13 +11,25 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 public class DetailsActivity extends AppCompatActivity {
+    final public String ARG_NAME = "name";
+    String name;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+        if (null != savedInstanceState) {
+            name = savedInstanceState.getString(ARG_NAME);
+        }
+        if (name == null) {
+            name = "Details";
+        }
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.detailsToolbar);
+        setSupportActionBar(myToolbar);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Details");
+        actionBar.setTitle(name);
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override

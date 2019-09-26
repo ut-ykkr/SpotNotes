@@ -7,6 +7,7 @@ import android.view.MenuItem;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 public class RecordActivity extends AppCompatActivity {
 
@@ -14,8 +15,12 @@ public class RecordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.recToolbar);
+        setSupportActionBar(myToolbar);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Add Record");
+        actionBar.setTitle("");
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -28,10 +33,6 @@ public class RecordActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected (MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.recActionCancel:
-                finish();
-                return true;
-
             case R.id.recActionOK:
 
                 return true;

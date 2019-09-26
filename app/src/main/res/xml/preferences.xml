@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/settings_suggestions">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="suggestions_enabled"
+            android:title="@string/settings_suggestions_enabled" />
+        <SeekBarPreference
+            android:key="suggestions_count"
+            android:title="@string/settings_suggestions_count"
+            android:defaultValue="3"
+            android:max="10" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/settings_about">
+        <Preference
+            android:key="about_webpage"
+            android:title="@string/settings_about_website"
+            android:summary="@string/project_site_uri">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="@string/project_site_uri" />
+    </Preference>
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/settings_development">
+
+        <Preference
+            android:key="dev_show_notification"
+            android:title="@string/settings_development_notify" />
+        <Preference
+            android:key="dev_show_details"
+            android:title="@string/settingd_development_show_details" >
+            <intent
+                android:targetPackage="org.menhera.spotnotes"
+                android:targetClass="org.menhera.spotnotes.DetailsActivity"/>
+
+        </Preference>
+    </PreferenceCategory>
+</PreferenceScreen>
