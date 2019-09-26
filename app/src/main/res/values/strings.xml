@@ -25,4 +25,8 @@
     <string name="settings_about_website">Project site...</string>
     <string name="settings_about">About this app</string>
     <string name="record_title_hint">Record...</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="tab_location">Location</string>
+    <string name="tab_details">Details</string>
 </resources>

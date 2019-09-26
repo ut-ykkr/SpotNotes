@@ -24,4 +24,6 @@
     <string name="settings_about_website">プロジェクトサイト</string>
     <string name="settings_about">このアプリについて</string>
     <string name="record_title_hint">記録…</string>
+    <string name="tab_details">詳細</string>
+    <string name="tab_location">場所</string>
 </resources>
