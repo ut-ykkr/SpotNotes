@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="repeat_array">
-        <item>繰り返さない</item>
-        <item>毎日繰り返す</item>
-        <item>毎週繰り返す</item>
-        <item>毎月繰り返す</item>
-        <item>毎年繰り返す</item>
+        <item>No repeat</item>
+        <item>Every day</item>
+        <item>Every week</item>
+        <item>Every month</item>
+        <item>Every year</item>
     </string-array>
 </resources>

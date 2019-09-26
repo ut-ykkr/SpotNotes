@@ -45,7 +45,7 @@ public class RegisterActivity extends AppCompatActivity implements OnMapReadyCal
 
     Calendar cldr;
     EditText regName;
-    String notes;
+    String notes = "";
 
 
     final static int[] DISTANCES = {50, 100, 200, 500, 1000, 5000, 10000};
@@ -148,6 +148,9 @@ public class RegisterActivity extends AppCompatActivity implements OnMapReadyCal
     public ReminderItem buildReminderItem () {
         reminderItem.setTitle (regName.getText().toString());
         reminderItem.setNotes(notes);
+        double lat = reminderItem.getLat();
+        double lon = reminderItem.getLon();
+        reminderItem.setLocationName(getLocationName(lat, lon));
         return reminderItem;
     }
 

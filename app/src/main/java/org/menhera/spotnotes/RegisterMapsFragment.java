@@ -162,7 +162,6 @@ public class RegisterMapsFragment extends Fragment implements OnMapReadyCallback
             public void onCameraMove() {
                 LatLng loc = mMap.getCameraPosition().target;
                 activity.getReminderItem().setLatLon(loc.latitude, loc.longitude);
-                activity.getReminderItem().setLocationName(activity.getLocationName(loc.latitude, loc.longitude));
             }
         });
 
