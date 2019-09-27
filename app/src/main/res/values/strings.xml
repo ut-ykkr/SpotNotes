@@ -14,7 +14,7 @@
     <string name="msg_location_denied">Location is required for this app to work.</string>
     <string name="msg_no_location_provider">No location provider available</string>
     <string name="reminder_title_hint">Reminder...</string>
-    <string name="notes_hint">Notes...</string>
+    <string name="notes_hint">Notes&#8230;</string>
     <string name="tab_inuse">In use</string>
     <string name="tab_trash">Trash</string>
 
@@ -34,4 +34,5 @@
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="tab_records">Records</string>
     <string name="tab_maps">Maps</string>
+    <string name="menu_add">Add...</string>
 </resources>

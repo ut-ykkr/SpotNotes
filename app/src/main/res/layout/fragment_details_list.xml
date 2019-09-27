@@ -8,18 +8,6 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/detailsAddButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/button_add" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/detailsRecyclerView"
         android:layout_width="0dp"

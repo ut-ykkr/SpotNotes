@@ -28,4 +28,5 @@
     <string name="tab_location">場所</string>
     <string name="tab_maps">地図</string>
     <string name="tab_records">記録</string>
+    <string name="menu_add">新規…</string>
 </resources>
