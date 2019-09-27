@@ -21,7 +21,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 
 /**
@@ -40,6 +43,7 @@ public class RegisterMapsFragment extends Fragment implements OnMapReadyCallback
     private String mParam2;
 
     private GoogleMap mMap;
+    Marker centerMarker;
     RegisterActivity activity;
     boolean inOut = true; // in: true
 
@@ -142,13 +146,18 @@ public class RegisterMapsFragment extends Fragment implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         float zoom = 12.0f;
-        mMap.getUiSettings().setZoomControlsEnabled(true);
+
+        UiSettings uiSettings = mMap.getUiSettings();
+        uiSettings.setZoomControlsEnabled(true);
+        uiSettings.setMyLocationButtonEnabled(true);
+        uiSettings.setTiltGesturesEnabled(false);
 
         LatLng latLng = new LatLng( 35, 139 );
-//        mMap.addMarker( new MarkerOptions()
-//                .title( "ピンのタイトル" )
-//                .position( latLng ) );
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+        latLng = mMap.getCameraPosition().target;
+        centerMarker = mMap.addMarker( new MarkerOptions()
+                .title( "+" )
+                .position( latLng ) );
 
         LocationClient locationClient = new LocationClient(getContext(), new LocationClient.Listener() {
             @Override
@@ -162,6 +171,7 @@ public class RegisterMapsFragment extends Fragment implements OnMapReadyCallback
             public void onCameraMove() {
                 LatLng loc = mMap.getCameraPosition().target;
                 activity.getReminderItem().setLatLon(loc.latitude, loc.longitude);
+                centerMarker.setPosition(loc);
             }
         });
 
