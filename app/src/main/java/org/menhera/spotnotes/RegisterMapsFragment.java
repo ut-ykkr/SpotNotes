@@ -159,10 +159,14 @@ public class RegisterMapsFragment extends Fragment implements OnMapReadyCallback
                 .title( "+" )
                 .position( latLng ) );
 
+
         LocationClient locationClient = new LocationClient(getContext(), new LocationClient.Listener() {
             @Override
             public void onLocationFetched(Location location) {
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
+                LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+                activity.getReminderItem().setLatLon(loc.latitude, loc.longitude);
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
+                centerMarker.setPosition(loc);
             }
         });
 

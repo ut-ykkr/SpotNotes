@@ -4,11 +4,18 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import com.google.android.material.tabs.TabLayout;
+
+import org.menhera.spotnotes.ui.ListPagerAdapter;
+
+import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 
 public class DetailsActivity extends AppCompatActivity {
     final public String ARG_NAME = "name";
@@ -30,6 +37,14 @@ public class DetailsActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(name);
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        ListPagerAdapter pagerAdapter = new ListPagerAdapter(getSupportFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        pagerAdapter.addFragment(getString(R.string.tab_records), new DetailsListFragment());
+        pagerAdapter.addFragment(getString(R.string.tab_maps), new DetailsMapsFragment());
+        ViewPager viewPager = findViewById(R.id.detailsViewPager);
+        viewPager.setAdapter(pagerAdapter);
+        TabLayout tabLayout = findViewById(R.id.detailsTabLayout);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
 //    @Override

@@ -13,39 +13,28 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        app:layout_constraintBottom_toTopOf="@+id/detailsMap"
+        app:layout_constraintBottom_toTopOf="@+id/detailsTabLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/detailsRecyclerView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <fragment
-        android:id="@+id/detailsMap"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/detailsTabLayout"
         android:layout_width="match_parent"
-        android:layout_height="245dp"
-        app:layout_constraintBottom_toTopOf="@+id/detailsRecyclerView"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/detailsToolbar" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/detailsRecyclerView"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/detailsViewPager"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailsMap" />
+        app:layout_constraintTop_toBottomOf="@+id/detailsTabLayout">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/detailsAddButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_add" />
+    </androidx.viewpager.widget.ViewPager>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

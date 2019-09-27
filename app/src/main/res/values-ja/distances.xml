@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="distances_array">
+        <item>50m以内</item>
+        <item>100m以内</item>
+        <item>200m以内</item>
+        <item>500m以内</item>
+        <item>1km以内</item>
+        <item>5km以内</item>
+        <item>10km以内</item>
+    </string-array>
+</resources>

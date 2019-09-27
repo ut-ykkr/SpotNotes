@@ -9,13 +9,20 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.EventListener;
@@ -32,6 +39,7 @@ public class LocationClient implements LocationListener {
     private boolean gmsAvailable = false;
     private Listener listener;
     private Location lastKnownLocation;
+    private boolean updateNeeded;
 
     // GMS Location
     private FusedLocationProviderClient fusedLocationClient;
@@ -45,8 +53,13 @@ public class LocationClient implements LocationListener {
     }
 
     public LocationClient (Context context, Listener listener) {
+        this(context, listener, false);
+    }
+
+    public LocationClient (Context context, Listener listener, boolean updateNeeded) {
         this.context = context;
         this.listener = listener;
+        this.updateNeeded = updateNeeded;
 
         if (!hasLocationPermission()) {
             showToast(context.getResources().getString(R.string.msg_location_denied));
@@ -58,8 +71,16 @@ public class LocationClient implements LocationListener {
         if (!gmsAvailable) {
             initializeAndroidLocation ();
         } else {
-            initializeGmsLocation ();
+            if (updateNeeded) {
+                initializeGmsNewLocation();
+            } else {
+                initializeGmsLocation();
+            }
         }
+    }
+
+    public boolean isUpdateNeeded() {
+        return updateNeeded;
     }
 
     private void initializeGmsLocation () {
@@ -71,27 +92,60 @@ public class LocationClient implements LocationListener {
                     public void onSuccess(Location location) {
                         if (location == null) {
                             Log.w(TAG, "GMS location is null");
+                            initializeGmsNewLocation ();
                             return;
                         }
 
                         callListener(location);
                     }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "GMS location failed");
+                        initializeGmsNewLocation();
+                    }
                 });
 
+    }
+
+    /**
+     * This is needed when Play Services do not have the latest location.
+     */
+    private void initializeGmsNewLocation () {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
+        fusedLocationClient.requestLocationUpdates(LocationRequest.create(). setInterval(0), new LocationCallback(){
+            @Override
+            public void onLocationResult (LocationResult result) {
+                if (result == null) {
+                    return;
+                }
+                for (Location location : result.getLocations()) {
+                    if (location == null){
+                        continue;
+                    }
+                    fusedLocationClient.removeLocationUpdates(this);
+                    callListener(location);
+                    break;
+                }
+            }
+        }, Looper.myLooper());
     }
 
     private void initializeAndroidLocation () {
         mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
         try {
-            List<String> providers = mLocationManager.getProviders(true);
-            for (String provider : providers) {
-                Log.d(TAG, "provider: " + provider);
-                Location l = mLocationManager.getLastKnownLocation(provider);
-                if (null != l) {
-                    Log.d(TAG, "Using last known location");
-                    callListener(l);
-                    return;
+            if (!updateNeeded) {
+                List<String> providers = mLocationManager.getProviders(true);
+                for (String provider : providers) {
+                    Log.d(TAG, "provider: " + provider);
+                    Location l = mLocationManager.getLastKnownLocation(provider);
+                    if (null != l) {
+                        Log.d(TAG, "Using last known location");
+                        callListener(l);
+                        return;
+                    }
                 }
             }
 
