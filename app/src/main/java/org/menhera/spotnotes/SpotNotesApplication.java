@@ -1,8 +1,10 @@
 package org.menhera.spotnotes;
 
 import android.app.Application;
+import android.content.Context;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EventListener;
 import java.util.List;
 import java.util.Set;
@@ -12,8 +14,8 @@ final public class SpotNotesApplication extends Application {
     List<ReminderItem> reminderItems;
     List<ReminderItem> reminderTrashItems;
 
-    WeakHashMap<ItemsChangeListener, Object> reminderItemsListeners;
-    WeakHashMap<ItemsChangeListener, Object> reminderTrashItemsListeners;
+    WeakHashMap<Context, ItemsChangeListener> reminderItemsListeners;
+    WeakHashMap<Context, ItemsChangeListener> reminderTrashItemsListeners;
 
     public interface ItemsChangeListener extends EventListener {
         public void onItemsChange (List<? extends SpotNotesListItem> items);
@@ -36,23 +38,23 @@ final public class SpotNotesApplication extends Application {
 
     }
 
-    public void registerReminderItemsListener (ItemsChangeListener listener) {
-        reminderItemsListeners.put(listener, null);
+    public void registerReminderItemsListener (Context context, ItemsChangeListener listener) {
+        reminderItemsListeners.put(context, listener);
     }
 
     protected void callReminderItemsListeners () {
-        Set<ItemsChangeListener> listeners = reminderItemsListeners.keySet();
+        Collection<ItemsChangeListener> listeners = reminderItemsListeners.values();
         for (ItemsChangeListener listener: listeners) {
             listener.onItemsChange (reminderItems);
         }
     }
 
-    public void registerReminderTrashItemsListener (ItemsChangeListener listener) {
-        reminderTrashItemsListeners.put(listener, null);
+    public void registerReminderTrashItemsListener (Context context, ItemsChangeListener listener) {
+        reminderTrashItemsListeners.put(context, listener);
     }
 
     protected void callReminderTrashItemsListeners () {
-        Set<ItemsChangeListener> listeners = reminderTrashItemsListeners.keySet();
+        Collection<ItemsChangeListener> listeners = reminderTrashItemsListeners.values();
         for (ItemsChangeListener listener: listeners) {
             listener.onItemsChange (reminderTrashItems);
         }

@@ -2,6 +2,7 @@ package org.menhera.spotnotes.ui.reminders_list;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RemindersFragment extends Fragment implements SpotNotesApplication.ItemsChangeListener {
+    final static String TAG = "RemindersFragment";
+
     final private static String ARG_TYPE = "type";
     final public static int ARG_TYPE_INUSE = 1;
     final public static int ARG_TYPE_TRASH = 2;
@@ -98,12 +101,12 @@ public class RemindersFragment extends Fragment implements SpotNotesApplication.
         switch (type) {
             case ARG_TYPE_INUSE:
                 items = app.getReminderItems();
-                app.registerReminderItemsListener(this);
+                app.registerReminderItemsListener(getContext(), this);
                 break;
 
             case ARG_TYPE_TRASH:
                 items = app.getReminderTrashItems();
-                app.registerReminderTrashItemsListener(this);
+                app.registerReminderTrashItemsListener(getContext(), this);
                 remlistAddButton.hide();
                 break;
 
@@ -138,6 +141,7 @@ public class RemindersFragment extends Fragment implements SpotNotesApplication.
     }
 
     public void onItemsChange (List<? extends SpotNotesListItem> items) {
+        Log.d(TAG, "onItemsChange() called");
         setItems((List<ReminderItem>) items);
     }
 
