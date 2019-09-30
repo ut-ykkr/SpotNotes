@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,8 +26,10 @@ public class DetailsActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-        if (null != savedInstanceState) {
-            name = savedInstanceState.getString(ARG_NAME);
+
+        Bundle extras = getIntent().getExtras();
+        if (null != extras) {
+            name = extras.getString(ARG_NAME);
         }
         if (name == null) {
             name = "Details";
@@ -37,6 +40,7 @@ public class DetailsActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(name);
         actionBar.setDisplayHomeAsUpEnabled(true);
+
 
         ListPagerAdapter pagerAdapter = new ListPagerAdapter(getSupportFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         pagerAdapter.addFragment(getString(R.string.tab_records), new DetailsListFragment());
@@ -50,16 +54,26 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.add_menu, menu);
+        inflater.inflate(R.menu.main_add_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu (Menu menu) {
+        menu.getItem(0).setVisible(false);
+        menu.getItem(1).setVisible(true);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected (MenuItem item) {
+        Intent intent;
         switch (item.getItemId()) {
-            case R.id.addbutton:
+            case R.id.mainAddRecord:
                 // Add an item
-
+                intent = new Intent(this, RecordActivity.class);
+                intent.putExtra(RecordActivity.ARG_NAME, name);
+                startActivity(intent);
                 return true;
 
             default:

@@ -15,20 +15,27 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import org.menhera.spotnotes.LocationClient;
 import org.menhera.spotnotes.R;
+import org.menhera.spotnotes.ui.activity_register.RegisterActivity;
 
 public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
     final static int PERMISSIONS_REQUEST_LOCATION = 1;
+
+    private NavController navController;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_reminders_list, R.id.navigation_records_list, R.id.navigation_settings)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
@@ -84,16 +91,59 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.add_menu, menu);
+        inflater.inflate(R.menu.main_add_menu, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected (MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.addbutton:
-                // Add an item
+    public boolean onPrepareOptionsMenu (Menu menu) {
+        this.menu = menu;
+        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+            @Override
+            public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+                updateMenu(destination.getId());
+            }
+        });
 
+        try {
+            updateMenu(navController.getCurrentDestination().getId());
+        } catch (Exception ex) {
+            updateMenu(R.id.navigation_records_list);
+        }
+        return true;
+    }
+
+    private void updateMenu (int destId) {
+        switch (destId) {
+            case R.id.navigation_reminders_list:
+                menu.getItem(0).setVisible(true);
+                menu.getItem(1).setVisible(false);
+                break;
+
+            case R.id.navigation_records_list:
+                menu.getItem(0).setVisible(false);
+                menu.getItem(1).setVisible(true);
+                break;
+
+            default:
+                menu.getItem(0).setVisible(false);
+                menu.getItem(1).setVisible(false);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected (MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.mainAddReminder:
+                // Add an item
+                intent = new Intent(this, RegisterActivity.class);
+                startActivity(intent);
+                return true;
+
+            case R.id.mainAddRecord:
+                intent = new Intent(this, RecordActivity.class);
+                startActivity(intent);
                 return true;
 
             default:

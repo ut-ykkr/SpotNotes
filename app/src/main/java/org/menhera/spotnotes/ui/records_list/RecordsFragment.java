@@ -36,15 +36,6 @@ public class RecordsFragment extends Fragment {
                 ViewModelProviders.of(this).get(RecordsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_records_list, container, false);
 
-        FloatingActionButton reclistAddButton = root.findViewById(R.id.reclistAddButton);
-        reclistAddButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), RecordActivity.class);
-                startActivity(intent);
-            }
-        });
-
         List<RecordItem> items = new ArrayList<RecordItem>();
         for (int i = 0; i < 30; i++) {
             RecordItem item = new RecordItem ("ごはん", "平均所要時間：25.5分");

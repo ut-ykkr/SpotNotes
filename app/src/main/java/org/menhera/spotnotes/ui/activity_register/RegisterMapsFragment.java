@@ -30,8 +30,10 @@ import org.menhera.spotnotes.R;
 import org.menhera.spotnotes.data.Reminder;
 import org.menhera.spotnotes.ui.ReminderItem;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class RegisterMapsFragment extends Fragment implements OnMapReadyCallback {
@@ -71,12 +73,16 @@ public class RegisterMapsFragment extends Fragment implements OnMapReadyCallback
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         regLocationInOut.setAdapter(adapter2);
 
+        final int[] distances = getResources().getIntArray(R.array.distances_values);
+        if (0 == activity.getViewModel().getRadius()) {
+            activity.getViewModel().setRadius(distances[0]);
+        }
         regLocationPrecision.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener () {
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int pos, long id) {
                 // An item was selected. You can retrieve the selected item using
                 // parent.getItemAtPosition(pos)
-                int[] distances = getResources().getIntArray(R.array.distances_values);
+
                 activity.getViewModel().setRadius(distances[pos]);
             }
 
@@ -111,8 +117,12 @@ public class RegisterMapsFragment extends Fragment implements OnMapReadyCallback
             @Override
             public void onChanged(List<Reminder> reminders) {
                 Reminder reminder = reminders.get(0);
-                int[] distances = getResources().getIntArray(R.array.distances_values);
-                regLocationPrecision.setSelection(Collections.singletonList(distances).indexOf(reminder.radius));
+
+                int radiusIndex = Arrays.stream(distances).boxed().collect(Collectors.toList()).indexOf(reminder.radius);
+                if (0 > radiusIndex) {
+                    radiusIndex = 0;
+                }
+                regLocationPrecision.setSelection(radiusIndex);
                 if (reminder.inOut == Reminder.InOut.IN) {
                     regLocationInOut.setSelection(0);
                 } else {

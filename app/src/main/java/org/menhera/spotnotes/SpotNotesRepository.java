@@ -16,6 +16,8 @@ import org.menhera.spotnotes.data.ReminderDao;
 import java.util.List;
 
 public class SpotNotesRepository {
+    private static SpotNotesRepository instance;
+
     private final static String DB_NAME = "spotnotes-db";
 
     AppDatabase db;
@@ -28,7 +30,15 @@ public class SpotNotesRepository {
     LiveData<List<Record>> undeletedRecords;
     LiveData<List<Record>> deletedRecords;
 
-    public SpotNotesRepository (Context context) {
+    public static SpotNotesRepository getInstance(Context context) {
+        Context app = context.getApplicationContext();
+        if (null == instance) {
+            instance = new SpotNotesRepository(app);
+        }
+        return instance;
+    }
+
+    private SpotNotesRepository (Context context) {
         db = Room.databaseBuilder(context, AppDatabase.class, DB_NAME).build();
         reminderDao = db.reminderDao();
         recordDao = db.recordDao();

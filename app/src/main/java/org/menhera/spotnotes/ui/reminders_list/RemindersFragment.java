@@ -2,6 +2,7 @@ package org.menhera.spotnotes.ui.reminders_list;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +28,6 @@ import java.security.InvalidParameterException;
 import java.util.List;
 
 public class RemindersFragment extends Fragment  {
-    final static String TAG = "RemindersFragment";
 
     /**
      * Which of the two lists we are in, i.e. in-use list or trash.
@@ -40,16 +40,10 @@ public class RemindersFragment extends Fragment  {
     final private static String ARG_TYPE = "deletion_status";
     private Type type = Type.IN_USE;
 
-    final public static int ARG_TYPE_INUSE = 1;
-    final public static int ARG_TYPE_TRASH = 2;
-
-
     private RemindersViewModel viewModel;
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     private RemindersAdapter mAdapter;
-    private boolean started = false;
-    private List<ReminderItem> items;
 
     public static RemindersFragment newInstance (Type type) {
         RemindersFragment fragment = new RemindersFragment();
@@ -59,8 +53,11 @@ public class RemindersFragment extends Fragment  {
         return fragment;
     }
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+
         viewModel =
                 ViewModelProviders.of(this).get(RemindersViewModel.class);
         final View root = inflater.inflate(R.layout.fragment_reminders_list, container, false);
@@ -71,7 +68,7 @@ public class RemindersFragment extends Fragment  {
         }
 
         if (null == viewModel.reminders) {
-            SpotNotesRepository repository = new SpotNotesRepository(getActivity().getApplication());
+            SpotNotesRepository repository = SpotNotesRepository.getInstance(getActivity().getApplication());
             switch (type) {
                 case IN_USE:
                     viewModel.reminders = repository.getUndeletedReminders();
@@ -85,17 +82,6 @@ public class RemindersFragment extends Fragment  {
                     throw new InvalidParameterException("Invalid type");
             }
         }
-
-        FloatingActionButton remlistAddButton = root.findViewById(R.id.remlistAddButton);
-
-        remlistAddButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), RegisterActivity.class);
-                startActivity(intent);
-            }
-        });
-
 
 
 //        for (int i = 0; i < 30; i++) {
@@ -121,21 +107,28 @@ public class RemindersFragment extends Fragment  {
         mAdapter = new RemindersAdapter();
         recyclerView.setAdapter(mAdapter);
 
-        viewModel.getReminders().observe(this, new Observer<List<Reminder>>() {
-            @Override
-            public void onChanged(List<Reminder> reminders) {
-                mAdapter.setReminders(reminders);
-            }
-        });
-
-        started = true;
         return root;
     }
 
+    @Override
+    public void onActivityCreated (Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        Log.d(RemindersFragment.class.getName(), "observe(): " + viewModel.getReminders().hashCode());
+        viewModel.getReminders().observe(getViewLifecycleOwner(), new Observer<List<Reminder>>() {
+            @Override
+            public void onChanged(List<Reminder> reminders) {
+                Log.d(RemindersFragment.class.getName(), "onChanged()");
+                mAdapter.setReminders(reminders);
+            }
+        });
+    }
+
+    @Override
     public void onResume () {
         super.onResume();
-        if (!started) return;
 
+        Log.d(RemindersFragment.class.getName(), "observers: " + viewModel.getReminders().hasActiveObservers());
         List<Reminder> reminders = viewModel.getReminders().getValue();
         if (null == reminders) {
             Log.d(RemindersFragment.class.getName(), "reminders == null");

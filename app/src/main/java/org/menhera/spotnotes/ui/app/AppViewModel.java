@@ -14,7 +14,7 @@ public class AppViewModel extends AndroidViewModel {
         super(application);
         spotNotesApplication = (SpotNotesApplication) application;
 
-        repository = new SpotNotesRepository(application);
+        repository = SpotNotesRepository.getInstance(application);
     }
 
     public SpotNotesRepository getRepository() {

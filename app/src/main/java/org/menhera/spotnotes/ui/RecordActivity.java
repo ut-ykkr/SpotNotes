@@ -2,9 +2,11 @@ package org.menhera.spotnotes.ui;
 
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.EditText;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +25,11 @@ import org.menhera.spotnotes.LocationClient;
 import org.menhera.spotnotes.R;
 
 public class RecordActivity extends AppCompatActivity {
+    final public static String ARG_NAME = "name";
+
+    private String name;
+
+    EditText recName;
     SupportMapFragment recMap;
     GoogleMap mMap;
     Marker centerMarker;
@@ -31,12 +38,25 @@ public class RecordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
+
+        Bundle extras = getIntent().getExtras();
+        if (null != extras) {
+            name = extras.getString(ARG_NAME);
+        }
+
+        Log.d(RecordActivity.class.getName(), "name: " + name);
+
         Toolbar myToolbar = (Toolbar) findViewById(R.id.recToolbar);
         setSupportActionBar(myToolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("");
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        recName = findViewById(R.id.recName);
+        if (null!= name) {
+            recName.setText(name);
+        }
 
         recMap = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.recMap);
         recMap.getMapAsync(new OnMapReadyCallback() {
@@ -50,7 +70,6 @@ public class RecordActivity extends AppCompatActivity {
                 float initZoom = 14.0f;
                 LatLng initLatLng = new LatLng( 35, 139 );
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(initLatLng, initZoom));
-
 
                 LocationClient locationClient = new LocationClient(RecordActivity.this, new LocationClient.Listener() {
                     @Override

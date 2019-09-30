@@ -35,4 +35,6 @@
     <string name="tab_records">Records</string>
     <string name="tab_maps">Maps</string>
     <string name="menu_add">Add...</string>
+    <string name="menu_add_reminder">Add reminder...</string>
+    <string name="menu_add_record">Add record...</string>
 </resources>

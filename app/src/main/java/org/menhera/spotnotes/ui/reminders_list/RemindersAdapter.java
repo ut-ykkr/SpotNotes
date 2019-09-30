@@ -15,9 +15,11 @@ import org.menhera.spotnotes.data.Reminder;
 import java.security.InvalidParameterException;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.ReminderHolder> {
     private List<Reminder> reminders;
@@ -26,6 +28,7 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
     private int[] radiusValues;
     private String[] inOutlabels;
     private String[] dayLabels;
+    private String[] repeatLabels;
 
     public static class ReminderHolder extends RecyclerView.ViewHolder {
         public LinearLayout layout;
@@ -68,6 +71,7 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
         radiusValues = res.getIntArray(R.array.distances_values);
         inOutlabels = res.getStringArray(R.array.in_out_array);
         dayLabels = res.getStringArray(R.array.days);
+        repeatLabels = res.getStringArray(R.array.repeat_array);
         return vh;
     }
 
@@ -81,13 +85,13 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
         TextView remitemLocation = holder.layout.findViewById(R.id.remitemLocation);
         Reminder reminder = this.reminders.get (position);
         remitemTitle.setText(reminder.title);
-        int radiusIndex = Collections.singletonList(radiusValues).indexOf(reminder.radius);
+        int radiusIndex = Arrays.stream(radiusValues).boxed().collect(Collectors.toList()).indexOf(reminder.radius);
         if (radiusIndex < 0) {
             radiusIndex = 0;
         }
         String radiusLabel = radiusLabels[radiusIndex];
         String inOutLabel = inOutlabels[reminder.inOut == Reminder.InOut.IN ? 0 : 1];
-        String location = reminder.address + "\n" + radiusLabel + "\n" + inOutLabel;
+        String location = reminder.address + "\n" + radiusLabel + " " + inOutLabel;
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(reminder.targetBaseTime);
@@ -104,7 +108,7 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
 
             case REPEAT_WEEK:
                 int day = calendar.get(Calendar.DAY_OF_WEEK);
-                dateTime += dayLabels[day];
+                dateTime += dayLabels[day] + " ";
                 dateFormat = DateFormat.getTimeInstance(DateFormat.SHORT);
                 break;
 
@@ -121,6 +125,7 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
         }
 
         dateTime += dateFormat.format(calendar.getTime());
+        dateTime += " " + repeatLabels[reminder.repeat.ordinal()];
         remitemDateTime.setText(dateTime);
         remitemLocation.setText(location);
     }

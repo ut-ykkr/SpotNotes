@@ -29,4 +29,6 @@
     <string name="tab_maps">地図</string>
     <string name="tab_records">記録</string>
     <string name="menu_add">新規…</string>
+    <string name="menu_add_reminder">新規リマインダ…</string>
+    <string name="menu_add_record">新規記録…</string>
 </resources>

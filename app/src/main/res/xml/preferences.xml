@@ -32,8 +32,8 @@
             android:key="dev_show_details"
             android:title="@string/settingd_development_show_details" >
             <intent
-                android:targetPackage="org.menhera.spotnotes"
-                android:targetClass="org.menhera.spotnotes.DetailsActivity"/>
+                android:targetClass="org.menhera.spotnotes.ui.DetailsActivity"
+                android:targetPackage="org.menhera.spotnotes" />
 
         </Preference>
     </PreferenceCategory>
