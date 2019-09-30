@@ -1,4 +1,4 @@
-package org.menhera.spotnotes;
+package org.menhera.spotnotes.ui.activity_register;
 
 
 import android.app.DatePickerDialog;
@@ -22,11 +22,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
+import org.menhera.spotnotes.R;
+import org.menhera.spotnotes.data.Reminder;
+
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import static java.text.DateFormat.MEDIUM;
 import static java.text.DateFormat.SHORT;
 
 
@@ -42,11 +44,11 @@ public class RegisterMainFragment extends Fragment {
     Calendar cldr;
     EditText regNotes;
 
-    int year;
-    int month;
-    int day;
-    int hour;
-    int minute;
+    private int year;
+    private int month;
+    private int day;
+    private int hour;
+    private int minute;
 
     public RegisterMainFragment() {
         // Required empty public constructor
@@ -65,15 +67,15 @@ public class RegisterMainFragment extends Fragment {
         activity = (RegisterActivity) getActivity();
 
         regDateButton = getView().findViewById(R.id.regDateButton);
-        long milliseconds = activity.getTimeInMillis ();
+        long milliseconds = activity.getViewModel().getTimeInMillis();
         String text = DateFormat.getDateInstance().format(new Date(milliseconds));
         regDateButton.setText(text);
         regDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                year = activity.getYear();
-                month = activity.getMonth();
-                day = activity.getDay();
+                year = activity.getViewModel().getYear();
+                month = activity.getViewModel().getMonth();
+                day = activity.getViewModel().getDay();
                 picker = new DatePickerDialog(getContext(),
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
@@ -81,8 +83,8 @@ public class RegisterMainFragment extends Fragment {
                                 day = dayOfMonth;
                                 month = monthOfYear;
                                 year = year2;
-                                activity.setDate(year2, monthOfYear, dayOfMonth);
-                                long milliseconds = activity.getTimeInMillis ();
+                                activity.getViewModel().setDate(year2, monthOfYear, dayOfMonth);
+                                long milliseconds = activity.getViewModel().getTimeInMillis ();
                                 String text = DateFormat.getDateInstance().format(new Date(milliseconds));
                                 regDateButton.setText(text);
                             }
@@ -92,23 +94,23 @@ public class RegisterMainFragment extends Fragment {
         });
 
         regTimeButton = getView().findViewById(R.id.regTimeButton);
-        long milliseconds2 = activity.getTimeInMillis ();
+        long milliseconds2 = activity.getViewModel().getTimeInMillis ();
         String text2 = DateFormat.getTimeInstance(SHORT).format(new Date(milliseconds2));
         regTimeButton.setText(text2);
 
         regTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                hour = activity.getHour();
-                minute = activity.getMinute();
+                hour = activity.getViewModel().getHour();
+                minute = activity.getViewModel().getMinute();
                 timePicker = new TimePickerDialog(getContext(),
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
                                 hour = sHour;
                                 minute = sMinute;
-                                activity.setTime(sHour, sMinute);
-                                long milliseconds = activity.getTimeInMillis ();
+                                activity.getViewModel().setTime(sHour, sMinute);
+                                long milliseconds = activity.getViewModel().getTimeInMillis ();
                                 String text = DateFormat.getTimeInstance(SHORT).format(new Date(milliseconds));
                                 regTimeButton.setText(text);
                             }
@@ -128,7 +130,7 @@ public class RegisterMainFragment extends Fragment {
                                        int pos, long id) {
                 // An item was selected. You can retrieve the selected item using
                 // parent.getItemAtPosition(pos)
-                activity.getReminderItem().setRepeat(pos);
+                activity.getViewModel().setRepeat(Reminder.Repeat.values()[pos]);
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
@@ -150,7 +152,7 @@ public class RegisterMainFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                activity.setNotes (editable.toString());
+                activity.getViewModel().setNotes (editable.toString());
             }
         });
     }

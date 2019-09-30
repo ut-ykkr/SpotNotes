@@ -74,4 +74,6 @@ dependencies {
     // (Java only)
     implementation "androidx.work:work-runtime:$work_version"
 
+    implementation 'com.google.dagger:dagger:2.24'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.24'
 }

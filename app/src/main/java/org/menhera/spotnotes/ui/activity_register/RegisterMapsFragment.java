@@ -1,20 +1,19 @@
-package org.menhera.spotnotes;
+package org.menhera.spotnotes.ui.activity_register;
 
 
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -26,22 +25,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.menhera.spotnotes.LocationClient;
+import org.menhera.spotnotes.R;
+import org.menhera.spotnotes.data.Reminder;
+import org.menhera.spotnotes.ui.ReminderItem;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RegisterMapsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.Collections;
+import java.util.List;
+
+
 public class RegisterMapsFragment extends Fragment implements OnMapReadyCallback {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private GoogleMap mMap;
     Marker centerMarker;
     RegisterActivity activity;
@@ -49,24 +42,6 @@ public class RegisterMapsFragment extends Fragment implements OnMapReadyCallback
 
     public RegisterMapsFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RegisterMapsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static RegisterMapsFragment newInstance(String param1, String param2) {
-        RegisterMapsFragment fragment = new RegisterMapsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -80,30 +55,29 @@ public class RegisterMapsFragment extends Fragment implements OnMapReadyCallback
         super.onViewCreated(view, savedInstanceState);
         activity = (RegisterActivity) getActivity();
 
-        Spinner regLocationPrecision = (Spinner) getView().findViewById(R.id.regLocationPrecision);
+        final Spinner regLocationPrecision = (Spinner) getView().findViewById(R.id.regLocationPrecision);
         // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.distances_array, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         regLocationPrecision.setAdapter(adapter);
 
-        Spinner regLocationInOut = getView().findViewById(R.id.regLocationInOut);
+        final Spinner regLocationInOut = getView().findViewById(R.id.regLocationInOut);
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getContext(),
                 R.array.in_out_array, android.R.layout.simple_spinner_item);
 
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         regLocationInOut.setAdapter(adapter2);
 
-        activity.setDistance(RegisterActivity.DISTANCES[0]);// TODO
         regLocationPrecision.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener () {
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int pos, long id) {
                 // An item was selected. You can retrieve the selected item using
                 // parent.getItemAtPosition(pos)
-                activity.setDistance(RegisterActivity.DISTANCES[pos]);
-
+                int[] distances = getResources().getIntArray(R.array.distances_values);
+                activity.getViewModel().setRadius(distances[pos]);
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
@@ -117,9 +91,9 @@ public class RegisterMapsFragment extends Fragment implements OnMapReadyCallback
                 // An item was selected. You can retrieve the selected item using
                 // parent.getItemAtPosition(pos)
                 if (pos == 0) {
-                    activity.getReminderItem().setInOut (ReminderItem.IN);
+                    activity.getViewModel().setInOut(Reminder.InOut.IN);
                 } else {
-                    activity.getReminderItem().setInOut (ReminderItem.OUT);
+                    activity.getViewModel().setInOut(Reminder.InOut.OUT);
                 }
             }
 
@@ -132,6 +106,21 @@ public class RegisterMapsFragment extends Fragment implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.regMap);
         mapFragment.getMapAsync(this);
+
+        activity.getViewModel().getReminders().observe(this, new Observer<List<Reminder>>() {
+            @Override
+            public void onChanged(List<Reminder> reminders) {
+                Reminder reminder = reminders.get(0);
+                int[] distances = getResources().getIntArray(R.array.distances_values);
+                regLocationPrecision.setSelection(Collections.singletonList(distances).indexOf(reminder.radius));
+                if (reminder.inOut == Reminder.InOut.IN) {
+                    regLocationInOut.setSelection(0);
+                } else {
+                    regLocationInOut.setSelection(1);
+                }
+                //activity.getViewModel().getReminders().removeObserver(this);
+            }
+        });
     }
 
     @Override
@@ -152,36 +141,39 @@ public class RegisterMapsFragment extends Fragment implements OnMapReadyCallback
         uiSettings.setMyLocationButtonEnabled(true);
         uiSettings.setTiltGesturesEnabled(false);
 
-        LatLng latLng = new LatLng( 35, 139 );
+        LatLng latLng;
+        final Reminder reminder = activity.getViewModel().getReminder();
+        if (reminder.hasValidLocation()) {
+            latLng = new LatLng(reminder.latitude, reminder.longitude);
+        } else {
+            latLng = new LatLng(35, 139);
+        }
+
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
-        latLng = mMap.getCameraPosition().target;
-        centerMarker = mMap.addMarker( new MarkerOptions()
-                .title( "+" )
-                .position( latLng ) );
+        centerMarker = mMap.addMarker(new MarkerOptions()
+                .position(latLng));
 
-
-        LocationClient locationClient = new LocationClient(getContext(), new LocationClient.Listener() {
-            @Override
-            public void onLocationFetched(Location location) {
-                LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
-                activity.getReminderItem().setLatLon(loc.latitude, loc.longitude);
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
-                centerMarker.setPosition(loc);
-            }
-        });
+        if (!reminder.hasValidLocation()) {
+            LocationClient locationClient = new LocationClient(getContext(), new LocationClient.Listener() {
+                @Override
+                public void onLocationFetched(Location location) {
+                    LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+                    activity.getViewModel().setLocation(loc.latitude, loc.longitude);
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
+                    centerMarker.setPosition(loc);
+                }
+            });
+        }
 
         mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
             @Override
             public void onCameraMove() {
                 LatLng loc = mMap.getCameraPosition().target;
-                activity.getReminderItem().setLatLon(loc.latitude, loc.longitude);
+                activity.getViewModel().setLocation(loc.latitude, loc.longitude);
                 centerMarker.setPosition(loc);
             }
         });
 
-        //LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
-        //mMap.addMarker(new MarkerOptions().position(myLocation).title("now Location"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 18));
     }
 
 }

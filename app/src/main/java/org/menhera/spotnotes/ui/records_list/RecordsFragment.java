@@ -5,12 +5,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,12 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.menhera.spotnotes.R;
-import org.menhera.spotnotes.RecordActivity;
-import org.menhera.spotnotes.RecordItem;
-import org.menhera.spotnotes.RecordsAdapter;
-import org.menhera.spotnotes.RegisterActivity;
-import org.menhera.spotnotes.ReminderItem;
-import org.menhera.spotnotes.RemindersAdapter;
+import org.menhera.spotnotes.ui.RecordActivity;
+import org.menhera.spotnotes.ui.RecordItem;
+import org.menhera.spotnotes.ui.RecordsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

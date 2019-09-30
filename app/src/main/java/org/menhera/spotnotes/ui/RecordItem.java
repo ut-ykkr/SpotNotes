@@ -1,4 +1,6 @@
-package org.menhera.spotnotes;
+package org.menhera.spotnotes.ui;
+
+import org.menhera.spotnotes.SpotNotesListItem;
 
 public class RecordItem extends SpotNotesListItem {
     private String title = "";

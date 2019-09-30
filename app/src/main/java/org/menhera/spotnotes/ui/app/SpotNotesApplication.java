@@ -1,16 +1,20 @@
-package org.menhera.spotnotes;
+package org.menhera.spotnotes.ui.app;
 
 import android.app.Application;
 import android.content.Context;
+
+import org.menhera.spotnotes.ui.ReminderItem;
+import org.menhera.spotnotes.SpotNotesListItem;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EventListener;
 import java.util.List;
-import java.util.Set;
 import java.util.WeakHashMap;
 
 final public class SpotNotesApplication extends Application {
+    AppViewModel viewModel;
+
     List<ReminderItem> reminderItems;
     List<ReminderItem> reminderTrashItems;
 
@@ -25,10 +29,15 @@ final public class SpotNotesApplication extends Application {
     public void onCreate() {
         /** Called when the Application-class is first created. */
         super.onCreate();
+        viewModel = new AppViewModel(this);
         reminderItems = new ArrayList<>();
         reminderTrashItems = new ArrayList<>();
         reminderItemsListeners = new WeakHashMap<>();
         reminderTrashItemsListeners = new WeakHashMap<>();
+    }
+
+    public AppViewModel getViewModel() {
+        return viewModel;
     }
 
     @Override

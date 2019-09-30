@@ -1,4 +1,4 @@
-package org.menhera.spotnotes;
+package org.menhera.spotnotes.ui;
 
 import android.Manifest;
 import android.content.Intent;
@@ -23,6 +23,9 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import org.menhera.spotnotes.LocationClient;
+import org.menhera.spotnotes.R;
 
 public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
     final static int PERMISSIONS_REQUEST_LOCATION = 1;

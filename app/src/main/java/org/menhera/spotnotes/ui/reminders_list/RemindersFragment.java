@@ -6,9 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -19,49 +17,73 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.menhera.spotnotes.MainActivity;
 import org.menhera.spotnotes.R;
-import org.menhera.spotnotes.RegisterActivity;
-import org.menhera.spotnotes.ReminderItem;
-import org.menhera.spotnotes.RemindersAdapter;
-import org.menhera.spotnotes.SpotNotesApplication;
-import org.menhera.spotnotes.SpotNotesListItem;
+import org.menhera.spotnotes.SpotNotesRepository;
+import org.menhera.spotnotes.data.Reminder;
+import org.menhera.spotnotes.ui.activity_register.RegisterActivity;
+import org.menhera.spotnotes.ui.ReminderItem;
 
-import java.util.ArrayList;
+import java.security.InvalidParameterException;
 import java.util.List;
 
-public class RemindersFragment extends Fragment implements SpotNotesApplication.ItemsChangeListener {
+public class RemindersFragment extends Fragment  {
     final static String TAG = "RemindersFragment";
 
-    final private static String ARG_TYPE = "type";
+    /**
+     * Which of the two lists we are in, i.e. in-use list or trash.
+     */
+    public enum Type {
+        IN_USE,
+        DELETED,
+    };
+
+    final private static String ARG_TYPE = "deletion_status";
+    private Type type = Type.IN_USE;
+
     final public static int ARG_TYPE_INUSE = 1;
     final public static int ARG_TYPE_TRASH = 2;
 
-    private int type = ARG_TYPE_INUSE;
-    private RemindersViewModel homeViewModel;
+
+    private RemindersViewModel viewModel;
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     private RemindersAdapter mAdapter;
     private boolean started = false;
     private List<ReminderItem> items;
 
-    public static RemindersFragment newInstance (int type) {
+    public static RemindersFragment newInstance (Type type) {
         RemindersFragment fragment = new RemindersFragment();
         Bundle args = new Bundle ();
-        args.putInt(ARG_TYPE, type);
+        args.putInt(ARG_TYPE, type.ordinal());
         fragment.setArguments(args);
         return fragment;
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
+        viewModel =
                 ViewModelProviders.of(this).get(RemindersViewModel.class);
         final View root = inflater.inflate(R.layout.fragment_reminders_list, container, false);
 
         Bundle args = getArguments();
         if (null != args) {
-            type = args.getInt(ARG_TYPE);
+            type = Type.values()[args.getInt(ARG_TYPE)];
+        }
+
+        if (null == viewModel.reminders) {
+            SpotNotesRepository repository = new SpotNotesRepository(getActivity().getApplication());
+            switch (type) {
+                case IN_USE:
+                    viewModel.reminders = repository.getUndeletedReminders();
+                    break;
+
+                case DELETED:
+                    viewModel.reminders = repository.getDeletedReminders();
+                    break;
+
+                default:
+                    throw new InvalidParameterException("Invalid type");
+            }
         }
 
         FloatingActionButton remlistAddButton = root.findViewById(R.id.remlistAddButton);
@@ -95,59 +117,31 @@ public class RemindersFragment extends Fragment implements SpotNotesApplication.
                 layoutManager.getOrientation());
         recyclerView.addItemDecoration(mDividerItemDecoration);
 
-        SpotNotesApplication app = (SpotNotesApplication) getActivity().getApplication();
-
-
-        switch (type) {
-            case ARG_TYPE_INUSE:
-                items = app.getReminderItems();
-                app.registerReminderItemsListener(getContext(), this);
-                break;
-
-            case ARG_TYPE_TRASH:
-                items = app.getReminderTrashItems();
-                app.registerReminderTrashItemsListener(getContext(), this);
-                remlistAddButton.hide();
-                break;
-
-            default:
-                throw new UnsupportedOperationException("Unsupported type of reminders list");
-        }
-
         // specify an adapter (see also next example)
-        mAdapter = new RemindersAdapter(items);
+        mAdapter = new RemindersAdapter();
         recyclerView.setAdapter(mAdapter);
 
-        /*
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(this, new Observer<String>() {
+        viewModel.getReminders().observe(this, new Observer<List<Reminder>>() {
             @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
+            public void onChanged(List<Reminder> reminders) {
+                mAdapter.setReminders(reminders);
             }
         });
-        */
-
-
 
         started = true;
         return root;
-    }
-
-    public void setItems (List<ReminderItem> items) {
-        if (!started) return;
-        mAdapter.setItems(items);
-        mAdapter.notifyDataSetChanged();
-    }
-
-    public void onItemsChange (List<? extends SpotNotesListItem> items) {
-        Log.d(TAG, "onItemsChange() called");
-        setItems((List<ReminderItem>) items);
     }
 
     public void onResume () {
         super.onResume();
         if (!started) return;
 
+        List<Reminder> reminders = viewModel.getReminders().getValue();
+        if (null == reminders) {
+            Log.d(RemindersFragment.class.getName(), "reminders == null");
+        } else {
+            Log.d(RemindersFragment.class.getName(), "reminders != null");
+            mAdapter.setReminders(reminders);
+        }
     }
 }

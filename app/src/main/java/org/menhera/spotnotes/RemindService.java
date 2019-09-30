@@ -14,6 +14,9 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import org.menhera.spotnotes.ui.ReminderItem;
+import org.menhera.spotnotes.ui.app.SpotNotesApplication;
+
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.

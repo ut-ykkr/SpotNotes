@@ -1,4 +1,4 @@
-package org.menhera.spotnotes;
+package org.menhera.spotnotes.ui;
 
 import androidx.fragment.app.FragmentActivity;
 
@@ -10,6 +10,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.menhera.spotnotes.R;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 

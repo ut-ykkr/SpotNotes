@@ -1,6 +1,8 @@
-package org.menhera.spotnotes;
+package org.menhera.spotnotes.ui;
 
 import android.text.TextUtils;
+
+import org.menhera.spotnotes.SpotNotesListItem;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

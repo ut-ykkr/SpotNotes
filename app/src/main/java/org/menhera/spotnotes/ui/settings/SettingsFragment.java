@@ -16,9 +16,8 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
-import org.menhera.spotnotes.DetailsActivity;
+import org.menhera.spotnotes.ui.DetailsActivity;
 import org.menhera.spotnotes.R;
-import org.menhera.spotnotes.RegisterActivity;
 
 public class SettingsFragment extends Fragment {
 

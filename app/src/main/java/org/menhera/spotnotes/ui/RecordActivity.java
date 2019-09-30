@@ -1,4 +1,4 @@
-package org.menhera.spotnotes;
+package org.menhera.spotnotes.ui;
 
 import android.location.Location;
 import android.os.Bundle;
@@ -18,6 +18,9 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.menhera.spotnotes.LocationClient;
+import org.menhera.spotnotes.R;
 
 public class RecordActivity extends AppCompatActivity {
     SupportMapFragment recMap;

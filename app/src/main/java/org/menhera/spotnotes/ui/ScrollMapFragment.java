@@ -1,4 +1,4 @@
-package org.menhera.spotnotes;
+package org.menhera.spotnotes.ui;
 
 import android.content.Context;
 import android.os.Bundle;

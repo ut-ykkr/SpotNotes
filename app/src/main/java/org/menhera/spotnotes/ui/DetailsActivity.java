@@ -1,4 +1,4 @@
-package org.menhera.spotnotes;
+package org.menhera.spotnotes.ui;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -13,7 +13,7 @@ import android.view.MenuItem;
 
 import com.google.android.material.tabs.TabLayout;
 
-import org.menhera.spotnotes.ui.ListPagerAdapter;
+import org.menhera.spotnotes.R;
 
 import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 
