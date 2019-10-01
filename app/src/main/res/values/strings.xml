@@ -34,4 +34,5 @@
     <string name="menu_add_record">Add record&#8230;</string>
     <string name="settings_suggestions_summary">Show reminders suggestions based on records</string>
     <string name="settings_suggestions_count_title">Suggestions sensitivity</string>
+    <string name="settingd_development_show_maps">Show Maps…</string>
 </resources>

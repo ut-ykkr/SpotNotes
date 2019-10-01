@@ -210,6 +210,10 @@ public class LocationClient implements LocationListener {
 
     protected void showToast (String msg) {
         Log.d(TAG, "Toast: " + msg);
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+        try {
+            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+        } catch (Exception ex) {
+            Log.w (TAG, "" + ex);
+        }
     }
 }
