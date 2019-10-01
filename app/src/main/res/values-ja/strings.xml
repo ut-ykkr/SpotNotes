@@ -33,5 +33,6 @@
     <string name="menu_add_record">新規記録…</string>
     <string name="settings_suggestions_summary">記録にもとづいてリマインダのおすすめを表示</string>
     <string name="settings_suggestions_count_title">おすすめの積極性</string>
-    <string name="settingd_development_show_maps">地図を表示…</string>
+    <string name="settings_development_show_stats">統計情報を表示…</string>
+    <string name="settings_development_show_maps">地図を表示…</string>
 </resources>

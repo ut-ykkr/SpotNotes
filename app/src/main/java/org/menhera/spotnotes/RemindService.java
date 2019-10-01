@@ -13,9 +13,16 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.lifecycle.LifecycleService;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
+import org.menhera.spotnotes.data.Reminder;
 import org.menhera.spotnotes.ui.ReminderItem;
+import org.menhera.spotnotes.ui.app.AppViewModel;
 import org.menhera.spotnotes.ui.app.SpotNotesApplication;
+
+import java.util.List;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -24,12 +31,13 @@ import org.menhera.spotnotes.ui.app.SpotNotesApplication;
  * TODO: Customize class - update intent actions, extra parameters and static
  * helper methods.
  */
-public class RemindService extends Service implements LocationClient.Listener {
+public class RemindService extends LifecycleService implements LocationClient.Listener {
     final static String TAG = "RemindService";
-    private LocationManager mLocationManager;
-    private String bestProvider;
-    private LocationClient locationClient;
+    final public static String ARG_REMINDER_ID = "reminder_id";
 
+    private SpotNotesRepository repository;
+    private AppViewModel viewModel;
+    private LocationClient locationClient;
 
     public String title;
     public double lat;
@@ -59,29 +67,50 @@ public class RemindService extends Service implements LocationClient.Listener {
 
     @Override
     public IBinder onBind(Intent intent) {
+        super.onBind(intent);
         return null;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        int index = intent.getIntExtra("index", 0);
-        Log.d(TAG, "onStartCommand index : " + index);
+        super.onStartCommand(intent, flags, startId);
 
-        SpotNotesApplication app = (SpotNotesApplication)getApplication();
-        ReminderItem item = app.getReminderItem(index);
+        viewModel = ((SpotNotesApplication) getApplication()).getViewModel();
+        repository = SpotNotesRepository.getInstance(getApplicationContext());
+        int id = intent.getIntExtra(ARG_REMINDER_ID, 0);
+        Log.d(TAG, "onStartCommand id : " + id);
 
+        int[] ids = {id};
+        final LiveData<List<Reminder>> liveData = repository.getRemindersByIds(ids);
+        liveData.observe(this, new Observer<List<Reminder>>() {
+            @Override
+            public void onChanged(List<Reminder> reminders) {
+                Reminder reminder = reminders.get(0);
+                if (null == reminder) {
+                    Log.w(TAG, "Reminder is null");
+                    return;
+                }
 
-        in = item.getInOut();
+                liveData.removeObserver(this);
 
-        title = item.getTitle();
-        lat = item.getLat();
-        lon =  item.getLon();
-        addr = item.getLocation();
-        time = item.getMilliseconds();
-        radius = item.getDistance();
-        memo = item.getNotes();
+                in = reminder.inOut == Reminder.InOut.IN;
+                title = reminder.title;
+                lat = reminder.latitude;
+                lon = reminder.longitude;
+                addr = reminder.address;
+                time = reminder.targetBaseTime;
+                radius = reminder.radius;
+                memo = reminder.notes;
 
-        locationClient = new LocationClient(this, this);
+                locationClient = new LocationClient(RemindService.this, RemindService.this);
+
+                if (reminder.repeat != Reminder.Repeat.REPEAT_NONE) {
+                    viewModel.setReminder(reminder);
+                } else {
+                    repository.markReminderDeleted(reminder);
+                }
+            }
+        });
 
         return START_NOT_STICKY;
     }

@@ -40,9 +40,16 @@
         </Preference>
         <Preference
             android:key="dev_show_maps"
-            android:title="@string/settingd_development_show_maps" >
+            android:title="@string/settings_development_show_maps" >
             <intent
                 android:targetClass="org.menhera.spotnotes.ui.MapsActivity"
+                android:targetPackage="org.menhera.spotnotes" />
+        </Preference>
+        <Preference
+            android:key="dev_show_stats"
+            android:title="@string/settings_development_show_stats" >
+            <intent
+                android:targetClass="org.menhera.spotnotes.ui.StatsActivity"
                 android:targetPackage="org.menhera.spotnotes" />
         </Preference>
     </PreferenceCategory>
