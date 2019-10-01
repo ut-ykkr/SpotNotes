@@ -9,7 +9,7 @@
     <string name="title_records">記録</string>
     <string name="title_reminders">リマインダー</string>
     <string name="title_settings">設定</string>
-    <string name="settingd_development_show_details">詳細を表示</string>
+    <string name="settings_development_show_details">詳細を表示</string>
     <string name="title_activity_maps">地図</string>
     <string name="required">必須</string>
     <string name="msg_location_denied">このアプリの動作には位置情報が必要です</string>
@@ -35,4 +35,6 @@
     <string name="settings_suggestions_count_title">おすすめの積極性</string>
     <string name="settings_development_show_stats">統計情報を表示…</string>
     <string name="settings_development_show_maps">地図を表示…</string>
+    <string name="tab_by_date">日付順</string>
+    <string name="tab_by_title">タイトル別</string>
 </resources>

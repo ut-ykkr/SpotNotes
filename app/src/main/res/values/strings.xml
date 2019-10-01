@@ -9,7 +9,7 @@
     <string name="settings_development">Development Options</string>
     <string name="settings_development_notify">Show Notification</string>
     <string name="activity_back">Back</string>
-    <string name="settingd_development_show_details">Show Details&#8230;</string>
+    <string name="settings_development_show_details">Show Details&#8230;</string>
     <string name="required">Required</string>
     <string name="msg_location_denied">Location is required for this app to work.</string>
     <string name="msg_no_location_provider">No location provider available</string>
@@ -26,7 +26,6 @@
     <string name="record_title_hint">Record&#8230;</string>
     <string name="tab_location">Location</string>
     <string name="tab_details">Details</string>
-    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="tab_records">Records</string>
     <string name="tab_maps">Maps</string>
     <string name="menu_add">Add&#8230;</string>
@@ -36,4 +35,6 @@
     <string name="settings_suggestions_count_title">Suggestions sensitivity</string>
     <string name="settings_development_show_stats">Show statistics…</string>
     <string name="settings_development_show_maps">Show Maps…</string>
+    <string name="tab_by_title">By title</string>
+    <string name="tab_by_date">By date</string>
 </resources>

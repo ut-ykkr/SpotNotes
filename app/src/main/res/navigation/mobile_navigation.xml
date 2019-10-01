@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/navigation_records_list"
-        android:name="org.menhera.spotnotes.ui.records_list.RecordsFragment"
+        android:name="org.menhera.spotnotes.ui.RecordTabsFragment"
         android:label="@string/title_records"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_record_tabs" />
 
     <fragment
         android:id="@+id/navigation_settings"

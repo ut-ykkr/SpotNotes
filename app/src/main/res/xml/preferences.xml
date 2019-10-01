@@ -32,7 +32,7 @@
             android:title="@string/settings_development_notify" />
         <Preference
             android:key="dev_show_details"
-            android:title="@string/settingd_development_show_details" >
+            android:title="@string/settings_development_show_details" >
             <intent
                 android:targetClass="org.menhera.spotnotes.ui.DetailsActivity"
                 android:targetPackage="org.menhera.spotnotes" />
