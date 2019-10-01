@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +22,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.menhera.spotnotes.R;
 import org.menhera.spotnotes.SpotNotesRepository;
 import org.menhera.spotnotes.data.Reminder;
+import org.menhera.spotnotes.ui.SwipeToDeleteCallback;
 import org.menhera.spotnotes.ui.activity_register.RegisterActivity;
 import org.menhera.spotnotes.ui.ReminderItem;
 
@@ -83,6 +85,9 @@ public class RemindersFragment extends Fragment  {
             }
         }
 
+        if (null == viewModel.repository) {
+            viewModel.repository = SpotNotesRepository.getInstance(getActivity().getApplication());
+        }
 
 //        for (int i = 0; i < 30; i++) {
 //            ReminderItem item = new ReminderItem ("ごはん", "2019-09-21 18:00", "東京都文京区");
@@ -104,8 +109,11 @@ public class RemindersFragment extends Fragment  {
         recyclerView.addItemDecoration(mDividerItemDecoration);
 
         // specify an adapter (see also next example)
-        mAdapter = new RemindersAdapter();
+        mAdapter = new RemindersAdapter(viewModel);
         recyclerView.setAdapter(mAdapter);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(mAdapter, getContext()));
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         return root;
     }
@@ -136,5 +144,9 @@ public class RemindersFragment extends Fragment  {
             Log.d(RemindersFragment.class.getName(), "reminders != null");
             mAdapter.setReminders(reminders);
         }
+    }
+
+    public RemindersViewModel getViewModel() {
+        return viewModel;
     }
 }

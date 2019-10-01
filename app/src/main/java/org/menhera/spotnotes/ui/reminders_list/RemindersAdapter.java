@@ -7,10 +7,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.menhera.spotnotes.R;
 import org.menhera.spotnotes.data.Reminder;
+import org.menhera.spotnotes.ui.DeletableAdapter;
 
 import java.security.InvalidParameterException;
 import java.text.DateFormat;
@@ -21,7 +23,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.ReminderHolder> {
+public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.ReminderHolder> implements DeletableAdapter {
     private List<Reminder> reminders;
 
     private String[] radiusLabels;
@@ -29,6 +31,8 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
     private String[] inOutlabels;
     private String[] dayLabels;
     private String[] repeatLabels;
+
+    RemindersViewModel viewModel;
 
     public static class ReminderHolder extends RecyclerView.ViewHolder {
         public LinearLayout layout;
@@ -38,12 +42,9 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
         }
     }
 
-    public RemindersAdapter () {
+    public RemindersAdapter (RemindersViewModel viewModel1) {
         this.reminders = new ArrayList<>();
-    }
-
-    public RemindersAdapter (List<Reminder> reminders) {
-        this.reminders = reminders;
+        viewModel = viewModel1;
     }
 
     public List<Reminder> getReminders() {
@@ -58,6 +59,7 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
 
     // Create new views (invoked by the layout manager)
     @Override
+    @NonNull
     public RemindersAdapter.ReminderHolder onCreateViewHolder(ViewGroup parent,
                                                               int viewType) {
         // create a new view
@@ -136,4 +138,8 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
         return reminders.size ();
     }
 
+    @Override
+    public void deleteItem (int pos) {
+        viewModel.deleteReminder(reminders.get(pos));
+    }
 }

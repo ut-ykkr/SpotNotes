@@ -11,6 +11,7 @@ import java.util.List;
 
 public class RemindersViewModel extends ViewModel {
     LiveData<List<Reminder>> reminders;
+    SpotNotesRepository repository;
 
     public RemindersViewModel() {
 
@@ -18,5 +19,13 @@ public class RemindersViewModel extends ViewModel {
 
     public LiveData<List<Reminder>> getReminders() {
         return reminders;
+    }
+
+    public void deleteReminder (Reminder reminder) {
+        if (reminder.isDeleted) {
+            repository.deleteReminder(reminder);
+        } else {
+            repository.markReminderDeleted(reminder);
+        }
     }
 }

@@ -31,4 +31,6 @@
     <string name="menu_add">新規…</string>
     <string name="menu_add_reminder">新規リマインダ…</string>
     <string name="menu_add_record">新規記録…</string>
+    <string name="settings_suggestions_summary">記録にもとづいてリマインダのおすすめを表示</string>
+    <string name="settings_suggestions_count_title">おすすめの積極性</string>
 </resources>

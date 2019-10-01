@@ -5,12 +5,14 @@
         <SwitchPreference
             android:defaultValue="true"
             android:key="suggestions_enabled"
+            android:summary="@string/settings_suggestions_summary"
             android:title="@string/settings_suggestions_enabled" />
         <SeekBarPreference
-            android:key="suggestions_count"
-            android:title="@string/settings_suggestions_count"
             android:defaultValue="3"
-            android:max="10" />
+            android:key="suggestions_count"
+            android:max="10"
+            android:summary="@string/settings_suggestions_count"
+            android:title="@string/settings_suggestions_count_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/settings_about">
         <Preference

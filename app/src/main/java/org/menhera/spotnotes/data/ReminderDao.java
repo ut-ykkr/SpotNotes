@@ -28,8 +28,14 @@ public interface ReminderDao extends LocationEntityDao {
     void insertAll (Reminder ... reminders);
 
     @Delete
-    void delete (Reminder reminder);
+    void deleteAll(Reminder ... reminders);
 
     @Update
     void updateAll (Reminder ... reminders);
+
+    @Query("UPDATE OR REPLACE reminder SET is_deleted = 1 WHERE id IN (:ids)")
+    void markAllDeletedByIds (int[] ids);
+
+    @Query("UPDATE OR REPLACE reminder SET is_deleted = 0 WHERE id IN (:ids)")
+    void markAllUndeletedByIds (int[] ids);
 }

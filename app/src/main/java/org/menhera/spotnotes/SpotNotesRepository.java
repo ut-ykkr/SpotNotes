@@ -1,6 +1,5 @@
 package org.menhera.spotnotes;
 
-import android.app.Application;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -78,6 +77,30 @@ public class SpotNotesRepository {
             @Override
             public Void doInBackground (Reminder ... reminders) {
                 reminderDao.insertAll(reminders);
+                return null;
+            }
+        }.execute(reminders);
+    }
+
+    public void markReminderDeleted (Reminder ... reminders) {
+        new AsyncTask<Reminder, Void, Void>() {
+            @Override
+            public Void doInBackground (Reminder ... reminders) {
+                int[] ids = new int[reminders.length];
+                for (int i = 0; i < reminders.length; i++) {
+                    ids[i] = reminders[i].id;
+                }
+                reminderDao.markAllDeletedByIds(ids);
+                return null;
+            }
+        }.execute(reminders);
+    }
+
+    public void deleteReminder (Reminder ... reminders) {
+        new AsyncTask<Reminder, Void, Void>() {
+            @Override
+            public Void doInBackground (Reminder ... reminders) {
+                reminderDao.deleteAll(reminders);
                 return null;
             }
         }.execute(reminders);

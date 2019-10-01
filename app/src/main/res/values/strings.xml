@@ -9,32 +9,29 @@
     <string name="settings_development">Development Options</string>
     <string name="settings_development_notify">Show Notification</string>
     <string name="activity_back">Back</string>
-    <string name="settingd_development_show_details">Show Details...</string>
+    <string name="settingd_development_show_details">Show Details&#8230;</string>
     <string name="required">Required</string>
     <string name="msg_location_denied">Location is required for this app to work.</string>
     <string name="msg_no_location_provider">No location provider available</string>
-    <string name="reminder_title_hint">Reminder...</string>
+    <string name="reminder_title_hint">Reminder&#8230;</string>
     <string name="notes_hint">Notes&#8230;</string>
     <string name="tab_inuse">In use</string>
     <string name="tab_trash">Trash</string>
-
-    <string name="settings_suggestions_count">Repeat count needed before suggesion is made</string>
+    <string name="settings_suggestions_count">Record repetition needed before suggestions are shown</string>
     <string name="settings_suggestions_enabled">Enable suggestions</string>
     <string name="title_details">Details</string>
     <string name="project_site_uri" translatable="false">https://github.com/ut-ykkr/SpotNotes</string>
-    <string name="settings_about_website">Project site...</string>
+    <string name="settings_about_website">Project site&#8230;</string>
     <string name="settings_about">About this app</string>
-    <string name="record_title_hint">Record...</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="record_title_hint">Record&#8230;</string>
     <string name="tab_location">Location</string>
     <string name="tab_details">Details</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="tab_records">Records</string>
     <string name="tab_maps">Maps</string>
-    <string name="menu_add">Add...</string>
-    <string name="menu_add_reminder">Add reminder...</string>
-    <string name="menu_add_record">Add record...</string>
+    <string name="menu_add">Add&#8230;</string>
+    <string name="menu_add_reminder">Add reminder&#8230;</string>
+    <string name="menu_add_record">Add record&#8230;</string>
+    <string name="settings_suggestions_summary">Show reminders suggestions based on records</string>
+    <string name="settings_suggestions_count_title">Suggestions sensitivity</string>
 </resources>
