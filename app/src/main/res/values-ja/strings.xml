@@ -37,4 +37,7 @@
     <string name="settings_development_show_maps">地図を表示…</string>
     <string name="tab_by_date">日付順</string>
     <string name="tab_by_title">タイトル別</string>
+    <string name="format_duration">継続：%s</string>
+    <string name="format_start">開始：%s</string>
+    <string name="format_finished">終了：%s</string>
 </resources>

@@ -83,7 +83,7 @@ public class RegisterViewModel extends ViewModel {
     }
 
     public void setTitle (String title) {
-        this.reminder.title = title;
+        this.reminder.title = title.trim();
     }
 
     public void setRepeat (Reminder.Repeat repeat) {

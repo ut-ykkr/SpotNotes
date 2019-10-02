@@ -3,17 +3,13 @@ package org.menhera.spotnotes.ui;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.hardware.camera2.params.MandatoryStreamCombination;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +25,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import org.menhera.spotnotes.LocationClient;
 import org.menhera.spotnotes.R;
+import org.menhera.spotnotes.ui.activity_record.RecordActivity;
 import org.menhera.spotnotes.ui.activity_register.RegisterActivity;
 
 public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {

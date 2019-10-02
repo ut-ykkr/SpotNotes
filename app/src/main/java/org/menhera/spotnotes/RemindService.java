@@ -88,6 +88,7 @@ public class RemindService extends LifecycleService implements LocationClient.Li
                 Reminder reminder = reminders.get(0);
                 if (null == reminder) {
                     Log.w(TAG, "Reminder is null");
+                    stopSelf();
                     return;
                 }
 

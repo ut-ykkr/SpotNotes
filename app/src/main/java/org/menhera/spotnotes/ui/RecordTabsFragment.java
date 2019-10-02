@@ -15,8 +15,8 @@ import android.view.ViewGroup;
 import com.google.android.material.tabs.TabLayout;
 
 import org.menhera.spotnotes.R;
+import org.menhera.spotnotes.ui.details_list.DetailsListFragment;
 import org.menhera.spotnotes.ui.records_list.RecordsFragment;
-import org.menhera.spotnotes.ui.reminders_list.RemindersFragment;
 
 import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 
@@ -44,8 +44,8 @@ public class RecordTabsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         ListPagerAdapter pagerAdapter = new ListPagerAdapter(getChildFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         pagerAdapter.addFragment(getString(R.string.tab_by_title), new RecordsFragment());
-        pagerAdapter.addFragment(getString(R.string.tab_by_date), new RecordsFragment());
-        pagerAdapter.addFragment(getString(R.string.tab_trash), new RecordsFragment());
+        pagerAdapter.addFragment(getString(R.string.tab_by_date), DetailsListFragment.newInstance(null, false));
+        pagerAdapter.addFragment(getString(R.string.tab_trash), DetailsListFragment.newInstance(null, true));
         ViewPager viewPager = view.findViewById(R.id.recViewPager);
         viewPager.setAdapter(pagerAdapter);
         TabLayout tabLayout = view.findViewById(R.id.recTabLayout);

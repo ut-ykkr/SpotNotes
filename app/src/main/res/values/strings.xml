@@ -37,4 +37,9 @@
     <string name="settings_development_show_maps">Show Maps…</string>
     <string name="tab_by_title">By title</string>
     <string name="tab_by_date">By date</string>
+    <string name="avg_time">Average:</string>
+    <string name="total_time">Total:</string>
+    <string name="format_duration">Duration: %s</string>
+    <string name="format_start">Start: %s</string>
+    <string name="format_finished">Finished: %s</string>
 </resources>

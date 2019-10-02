@@ -1,5 +1,7 @@
-package org.menhera.spotnotes.ui;
+package org.menhera.spotnotes.ui.activity_record;
 
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.widget.EditText;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -23,10 +26,16 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.menhera.spotnotes.LocationClient;
 import org.menhera.spotnotes.R;
+import org.menhera.spotnotes.SpotNotesRepository;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 public class RecordActivity extends AppCompatActivity {
     final public static String ARG_NAME = "name";
 
+    private RecordViewModel viewModel;
     private String name;
 
     EditText recName;
@@ -38,6 +47,10 @@ public class RecordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
+        viewModel = ViewModelProviders.of(this).get(RecordViewModel.class);
+        if (viewModel.repository == null) {
+            viewModel.repository = SpotNotesRepository.getInstance(this);
+        }
 
         Bundle extras = getIntent().getExtras();
         if (null != extras) {
@@ -79,10 +92,34 @@ public class RecordActivity extends AppCompatActivity {
                         centerMarker = mMap.addMarker( new MarkerOptions()
                                 .title( "" )
                                 .position( latLng ) );
+
+                        viewModel.setLocation(location.getLatitude(), location.getLongitude());
+                        viewModel.setAddress (getLocationName(location.getLatitude(), location.getLongitude()));
                     }
                 });
             }
         });
+    }
+
+    public String getLocationName(double lati, double longi){
+        //Address address1 = new Address(this, );
+        StringBuffer strAddr = new StringBuffer();
+        Geocoder coder = new Geocoder(this, Locale.getDefault());
+        try{
+            List<Address> address = coder.getFromLocation(lati, longi, 1);
+            for (Address addr : address) {
+                int idx = addr.getMaxAddressLineIndex();
+                for (int i = 0; i <= idx; i++) {
+                    strAddr.append(addr.getAddressLine(i));
+                }
+            }
+            //String address = address1.getAdminarea() + address1.getLocality();
+            return strAddr.toString();
+            //return address
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     @Override
@@ -96,7 +133,9 @@ public class RecordActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected (MenuItem item) {
         switch (item.getItemId()) {
             case R.id.recActionOK:
-
+                viewModel.setTitle(recName.getText().toString());
+                viewModel.insertRecord();
+                finish();
                 return true;
 
             default:

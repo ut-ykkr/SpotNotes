@@ -27,7 +27,7 @@
             android:name=".ui.activity_register.RegisterActivity"
             android:parentActivityName=".ui.MainActivity" />
         <activity
-            android:name=".ui.RecordActivity"
+            android:name=".ui.activity_record.RecordActivity"
             android:parentActivityName=".ui.MainActivity" />
 
         <activity

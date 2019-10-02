@@ -18,11 +18,14 @@ public interface RecordDao extends LocationEntityDao {
     @Query("SELECT * FROM record WHERE id IN (:ids)")
     LiveData<List<Record>> loadAllByIds (int[] ids);
 
-    @Query("SELECT * FROM record WHERE is_deleted = :isDeleted")
+    @Query("SELECT * FROM record WHERE is_deleted = :isDeleted ORDER BY finished_time DESC")
     LiveData<List<Record>> getAllByDeleted (boolean isDeleted);
 
     @Query("SELECT * FROM record WHERE is_deleted = :isDeleted AND title = :title")
     LiveData<List<Record>> getByTitleAndDeleted (String title, boolean isDeleted);
+
+    @Query("SELECT avg(duration) AS avg_duration, title, avg(latitude) AS avg_latitude, avg(longitude) AS avg_longitude, sum(duration) AS total_duration FROM record WHERE is_deleted = :isDeleted GROUP BY title")
+    LiveData<List<RecordGroup>> getAllGroupsByDeleted (boolean isDeleted);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll (Record ... records);

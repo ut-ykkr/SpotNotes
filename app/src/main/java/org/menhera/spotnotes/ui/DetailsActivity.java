@@ -15,6 +15,8 @@ import android.view.MenuItem;
 import com.google.android.material.tabs.TabLayout;
 
 import org.menhera.spotnotes.R;
+import org.menhera.spotnotes.ui.activity_record.RecordActivity;
+import org.menhera.spotnotes.ui.details_list.DetailsListFragment;
 
 import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 
@@ -43,7 +45,7 @@ public class DetailsActivity extends AppCompatActivity {
 
 
         ListPagerAdapter pagerAdapter = new ListPagerAdapter(getSupportFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        pagerAdapter.addFragment(getString(R.string.tab_records), new DetailsListFragment());
+        pagerAdapter.addFragment(getString(R.string.tab_records), DetailsListFragment.newInstance(name, false));
         pagerAdapter.addFragment(getString(R.string.tab_maps), new DetailsMapsFragment());
         ViewPager viewPager = findViewById(R.id.detailsViewPager);
         viewPager.setAdapter(pagerAdapter);
